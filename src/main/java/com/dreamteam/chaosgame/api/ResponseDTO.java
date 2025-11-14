@@ -5,6 +5,7 @@ public class ResponseDTO {
     private String version;
     private String infoId;
     private String type;
+    private int value;
 
     public String getType() {
         return type;
@@ -36,6 +37,14 @@ public class ResponseDTO {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
 
