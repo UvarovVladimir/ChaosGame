@@ -10,7 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChaosgameApplication {
 
 	/**
-	 * @param argssdfsdf
+	 * asdasd
+	 * @param
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(ChaosgameApplication.class, args);
