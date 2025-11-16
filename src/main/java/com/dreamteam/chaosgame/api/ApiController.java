@@ -5,9 +5,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ *Какой-то Вовин класс
+ */
 @RestController
 public class ApiController {
 
+    /**
+     * @param infoId
+     * @param type
+     * @return
+     */
     @GetMapping("/info/{infoId}")
     public ResponseDTO getInfo(@PathVariable("infoId") String infoId,
                                @RequestParam(name = "type", required = false) String type) {
