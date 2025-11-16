@@ -1,13 +1,23 @@
 package com.dreamteam.chaosgame.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+/**
+ *
+ */
 @RestController
 public class ApiController {
 
+    /**
+     * asdfadsf
+     */
+    private final int counter =5;
+
+    /**
+     * @param infoId
+     * @param type
+     * @return
+     */
     @GetMapping("/info/{infoId}")
     public ResponseDTO getInfo(@PathVariable("infoId") String infoId,
                                @RequestParam(name = "type", required = false) String type) {
@@ -17,6 +27,10 @@ public class ApiController {
         responseDTO.setVersion("0.0.1");
         responseDTO.setInfoId(infoId);
         responseDTO.setType(type);
+
+        /*
+        asdfasdf
+         */
 
         return responseDTO;
     }
