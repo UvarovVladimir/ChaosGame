@@ -44,7 +44,7 @@ public class CardsApiController {
 
 
     @PutMapping("/cards/{cardId}")
-    public ResponseDTO updateCard(@PathVariable("infoId") String infoId,
+    public CardDTO updateCard(@PathVariable("infoId") String infoId,
                                   @RequestParam(name = "type", required = false) String type) {
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
@@ -53,7 +53,7 @@ public class CardsApiController {
 
 
     @DeleteMapping("/cards/{cardId}")
-    public ResponseDTO deleteCards(@PathVariable("infoId") String infoId,
+    public CardDTO deleteCards(@PathVariable("infoId") String infoId,
                                    @RequestParam(name = "type", required = false) String type) {
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
