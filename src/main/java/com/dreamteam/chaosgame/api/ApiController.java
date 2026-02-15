@@ -13,11 +13,6 @@ public class ApiController {
         this.chaosGameRepository = chaosGameRepository;
     }
 
-//    @PostConstruct
-//    void init() {
-//        putInfo("");
-//    }
-
     @GetMapping("/info/{infoId}")
     public ResponseDTO getInfo(@PathVariable("infoId") String infoId,
                                @RequestParam(name = "type", required = false) String type) {
@@ -32,11 +27,8 @@ public class ApiController {
     }
 
     @PostMapping("/info/{infoId}")
-    public Player putInfo(@PathVariable("infoId") String infoId) {
-
-        Player player = new Player();
-        player.setAge(22);
-        player.setLogin("sdfsdf");
+    public Player putInfo(@PathVariable("infoId") String infoId,
+                          @RequestBody Player player) {
 
         chaosGameRepository.save(player);
 
