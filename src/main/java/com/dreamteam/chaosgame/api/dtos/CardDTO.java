@@ -1,12 +1,11 @@
-package com.dreamteam.chaosgame.db;
-
-import com.dreamteam.chaosgame.api.dtos.CardRang;
-import com.dreamteam.chaosgame.api.dtos.CardType;
-import com.dreamteam.chaosgame.api.dtos.Rarety;
+package com.dreamteam.chaosgame.api.dtos;
 
 import java.time.Duration;
 
-public class Card {
+/**
+ * Это объект для свяки с UI при CRUD операциях с картами игрока.
+ */
+public class CardDTO {
 
     private String id;
     private String name;
@@ -16,15 +15,15 @@ public class Card {
     private Duration duration;
     private Duration recoveryTime;
 
-    public Card() {
+    public CardDTO() {
     }
 
-    public Card(String name,
-                CardType type,
-                CardRang rang,
-                Rarety rarety,
-                Duration duration,
-                Duration recoveryTime) {
+    public CardDTO(String name,
+                   CardType type,
+                   CardRang rang,
+                   Rarety rarety,
+                   Duration duration,
+                   Duration recoveryTime) {
         this.name = name;
         this.type = type;
         this.rang = rang;
@@ -60,6 +59,5 @@ public class Card {
     public Duration getRecoveryTime() {
         return recoveryTime;
     }
-
 
 }
