@@ -1,16 +1,21 @@
 package com.dreamteam.chaosgame.api.controllers;
 
-import com.dreamteam.chaosgame.api.CardDTO;
+import com.dreamteam.chaosgame.api.dtos.CardDTO;
+import com.dreamteam.chaosgame.api.validators.CardCreateApiValidator;
 import com.dreamteam.chaosgame.business.CardManagerService;
+import com.dreamteam.chaosgame.db.Card;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CardsApiController {
 
     private final CardManagerService cardManagerService;
+    private final CardCreateApiValidator cardCreateApiValidator;
 
-    public CardsApiController(CardManagerService cardManagerService) {
+    public CardsApiController(CardManagerService cardManagerService,
+                              CardCreateApiValidator cardCreateApiValidator) {
         this.cardManagerService = cardManagerService;
+        this.cardCreateApiValidator = cardCreateApiValidator;
     }
 
 
@@ -27,19 +32,31 @@ public class CardsApiController {
     @PostMapping("/cards")
     public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
 
-        // Определиться с полями DTO
+        cardCreateApiValidator.validate(cardDTO);
 
-        // Валидация запроса
+        Card cardFromUI = new Card(cardDTO.getName(),
+                cardDTO.getType(),
+                cardDTO.getRang(),
+                cardDTO.getRarety(),
+                cardDTO.getDuration(),
+                cardDTO.getRecoveryTime()
+        );
 
-        // Вызвать менеджер работы с картами для сохранения
+        Card createdCard = cardManagerService.createCard(cardFromUI);
 
-        return new CardDTO();
+        return new CardDTO(createdCard.getName(),
+                createdCard.getType(),
+                createdCard.getRang(),
+                createdCard.getRarety(),
+                createdCard.getDuration(),
+                createdCard.getRecoveryTime()
+        );
     }
 
 
     @PatchMapping("/cards/{cardId}")
     public CardDTO updateCardFields(@PathVariable("infoId") String infoId,
-                                        @RequestParam(name = "type", required = false) String type) {
+                                    @RequestParam(name = "type", required = false) String type) {
 
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
@@ -49,7 +66,7 @@ public class CardsApiController {
 
     @PutMapping("/cards/{cardId}")
     public CardDTO updateCard(@PathVariable("infoId") String infoId,
-                                  @RequestParam(name = "type", required = false) String type) {
+                              @RequestParam(name = "type", required = false) String type) {
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
         return new CardDTO();
@@ -58,7 +75,7 @@ public class CardsApiController {
 
     @DeleteMapping("/cards/{cardId}")
     public CardDTO deleteCards(@PathVariable("infoId") String infoId,
-                                   @RequestParam(name = "type", required = false) String type) {
+                               @RequestParam(name = "type", required = false) String type) {
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
         return new CardDTO();

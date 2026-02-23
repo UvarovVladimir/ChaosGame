@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 public class CardManagerService {
 
 
-    public Card createCard() {
+    public Card createCard(Card card) {
 
         // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
+        return new Card();
     }
 
     public Card updateCard() {
@@ -22,6 +23,7 @@ public class CardManagerService {
         // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
+        return new Card();
 
     }
 
@@ -29,11 +31,14 @@ public class CardManagerService {
         // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
+        return new Card();
 
     }
 
     public Card removeCard() {
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
+        return new Card();
+
     }
 
 }
