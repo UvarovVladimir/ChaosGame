@@ -1,7 +1,7 @@
-package com.dreamteam.chaosgame.api;
+package com.dreamteam.chaosgame.api.controllers;
 
+import com.dreamteam.chaosgame.api.CardDTO;
 import com.dreamteam.chaosgame.business.CardManagerService;
-import com.dreamteam.chaosgame.db.Player;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +16,7 @@ public class CardsApiController {
 
     @GetMapping("/cards/{cardId}")
     public CardDTO getCard(@PathVariable("infoId") String infoId,
-                               @RequestParam(name = "type", required = false) String type) {
+                           @RequestParam(name = "type", required = false) String type) {
 
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
@@ -25,10 +25,14 @@ public class CardsApiController {
 
 
     @PostMapping("/cards")
-    public CardDTO createNewCard(@RequestBody Player player) {
+    public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
 
+        // Определиться с полями DTO
 
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
+        // Валидация запроса
+
+        // Вызвать менеджер работы с картами для сохранения
+
         return new CardDTO();
     }
 
