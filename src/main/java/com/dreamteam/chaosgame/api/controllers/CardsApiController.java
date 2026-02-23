@@ -1,6 +1,7 @@
 package com.dreamteam.chaosgame.api.controllers;
 
 import com.dreamteam.chaosgame.api.dtos.CardDTO;
+import com.dreamteam.chaosgame.api.mappers.CardMapper;
 import com.dreamteam.chaosgame.api.validators.CardCreateApiValidator;
 import com.dreamteam.chaosgame.business.CardManagerService;
 import com.dreamteam.chaosgame.db.Card;
@@ -11,20 +12,22 @@ public class CardsApiController {
 
     private final CardManagerService cardManagerService;
     private final CardCreateApiValidator cardCreateApiValidator;
+    private final CardMapper cardMapper;
 
     public CardsApiController(CardManagerService cardManagerService,
-                              CardCreateApiValidator cardCreateApiValidator) {
+                              CardCreateApiValidator cardCreateApiValidator,
+                              CardMapper cardMapper) {
+
         this.cardManagerService = cardManagerService;
         this.cardCreateApiValidator = cardCreateApiValidator;
+        this.cardMapper = cardMapper;
     }
-
 
     @GetMapping("/cards/{cardId}")
     public CardDTO getCard(@PathVariable("infoId") String infoId,
                            @RequestParam(name = "type", required = false) String type) {
 
-
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
+        // TODO !!!!
         return new CardDTO();
     }
 
@@ -34,26 +37,17 @@ public class CardsApiController {
 
         cardCreateApiValidator.validate(cardDTO);
 
-        Card cardFromUI = new Card(cardDTO.getName(),
-                cardDTO.getType(),
-                cardDTO.getRang(),
-                cardDTO.getRarety(),
-                cardDTO.getDuration(),
-                cardDTO.getRecoveryTime()
-        );
+        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
 
         Card createdCard = cardManagerService.createCard(cardFromUI);
 
-        return new CardDTO(createdCard.getName(),
-                createdCard.getType(),
-                createdCard.getRang(),
-                createdCard.getRarety(),
-                createdCard.getDuration(),
-                createdCard.getRecoveryTime()
-        );
+        return cardMapper.mapEntityToDTO(createdCard);
     }
 
 
+    /**
+     * Частичное обновление полей.
+     */
     @PatchMapping("/cards/{cardId}")
     public CardDTO updateCardFields(@PathVariable("infoId") String infoId,
                                     @RequestParam(name = "type", required = false) String type) {
@@ -64,6 +58,9 @@ public class CardsApiController {
     }
 
 
+    /**
+     * Полная замена карты.
+     */
     @PutMapping("/cards/{cardId}")
     public CardDTO updateCard(@PathVariable("infoId") String infoId,
                               @RequestParam(name = "type", required = false) String type) {
@@ -73,6 +70,9 @@ public class CardsApiController {
     }
 
 
+    /**
+     * Удаление карты.
+     */
     @DeleteMapping("/cards/{cardId}")
     public CardDTO deleteCards(@PathVariable("infoId") String infoId,
                                @RequestParam(name = "type", required = false) String type) {

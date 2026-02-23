@@ -41,4 +41,8 @@ public class CardManagerService {
 
     }
 
+    public Card getCard(String cardId) {
+        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
+        return new Card();
+    }
 }
