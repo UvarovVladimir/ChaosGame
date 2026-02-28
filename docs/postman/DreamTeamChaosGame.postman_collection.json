@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "739d5222-1bbb-49e1-9a21-1dcbee604347",
+    "_postman_id": "1937803c-cb91-4b53-9ee5-df45a696fbfe",
     "name": "DreamTeamChaosGame",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "52400767",
-    "_collection_link": "https://go.postman.co/collection/52400767-739d5222-1bbb-49e1-9a21-1dcbee604347?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/52400767-1937803c-cb91-4b53-9ee5-df45a696fbfe?source=collection_link"
   },
   "item": [
     {
@@ -63,13 +63,15 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Successful POST request\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
                   "});",
                   ""
-                ]
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -78,7 +80,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+              "raw": "{\n\t\"name\": \"asdfasd\",\n\t\"type\": \"SHIELD\",\n\t\"rang\": \"GOLD\",\n\t\"rarety\": \"ORDINARY\",\n\t\"duration\": \"P2DT3H4M\",\n\t\"recoveryTime\": \"P2DT3H4M\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -86,7 +88,15 @@
               }
             },
             "url": {
-              "raw": ""
+              "raw": "http://localhost:8080/cards",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "cards"
+              ]
             },
             "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
           },
@@ -113,15 +123,6 @@
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
               "raw": ""
             },
