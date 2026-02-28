@@ -3,17 +3,35 @@ package com.dreamteam.chaosgame.db;
 import com.dreamteam.chaosgame.api.dtos.CardRang;
 import com.dreamteam.chaosgame.api.dtos.CardType;
 import com.dreamteam.chaosgame.api.dtos.Rarety;
+import jakarta.persistence.*;
 
 import java.time.Duration;
 
+@Entity
+@Table(name = "card")
 public class Card {
 
-    private String id;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "type", nullable = false)
     private CardType type;
+
+    @Column(name = "rang", nullable = false)
     private CardRang rang;
+
+    @Column(name = "rarety", nullable = false)
     private Rarety rarety;
+
+    @Column(name = "duration", nullable = false)
     private Duration duration;
+
+    @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
     public Card() {
@@ -33,7 +51,7 @@ public class Card {
         this.recoveryTime = recoveryTime;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -61,7 +79,7 @@ public class Card {
         return recoveryTime;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

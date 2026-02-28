@@ -62,7 +62,7 @@ public class CardsApiController {
      * Полная замена карты.
      */
     @PutMapping("/cards/{cardId}")
-    public CardDTO updateCard(@PathVariable("cardId") String cardId,
+    public CardDTO updateCard(@PathVariable("cardId") int cardId,
                               @RequestBody CardDTO cardDTO) {
 
         cardCreateApiValidator.validate(cardDTO);
