@@ -49,7 +49,7 @@ public class CardsApiController {
      * Частичное обновление полей.
      */
     @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("infoId") String infoId,
+    public CardDTO updateCardFields(@PathVariable("infoId") String cardId,
                                     @RequestParam(name = "type", required = false) String type) {
 
 
