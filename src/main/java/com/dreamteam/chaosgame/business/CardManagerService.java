@@ -35,7 +35,7 @@ public class CardManagerService {
 
     }
 
-    public Card removeCard() {
+    public Card removeCard(String cardId) {
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
         return new Card();
 
