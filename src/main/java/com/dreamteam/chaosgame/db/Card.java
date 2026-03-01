@@ -61,5 +61,31 @@ public class Card {
         return recoveryTime;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(CardType type) {
+        this.type = type;
+    }
+
+    public void setRang(CardRang rang) {
+        this.rang = rang;
+    }
+
+    public void setRarety(Rarety rarety) {
+        this.rarety = rarety;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setRecoveryTime(Duration recoveryTime) {
+        this.recoveryTime = recoveryTime;
+    }
 }

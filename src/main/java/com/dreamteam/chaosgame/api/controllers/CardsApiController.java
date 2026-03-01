@@ -62,11 +62,17 @@ public class CardsApiController {
      * Полная замена карты.
      */
     @PutMapping("/cards/{cardId}")
-    public CardDTO updateCard(@PathVariable("infoId") String infoId,
-                              @RequestParam(name = "type", required = false) String type) {
+    public CardDTO updateCard(@PathVariable("cardId") String cardId,
+                              @RequestBody CardDTO cardDTO) {
 
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
-        return new CardDTO();
+        cardCreateApiValidator.validate(cardDTO);
+
+        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        cardFromUI.setId(cardId);
+
+        Card createdCard = cardManagerService.updateCard(cardFromUI);
+
+        return cardMapper.mapEntityToDTO(createdCard);
     }
 
 
