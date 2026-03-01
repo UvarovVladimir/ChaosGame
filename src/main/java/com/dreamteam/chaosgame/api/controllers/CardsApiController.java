@@ -53,7 +53,7 @@ public class CardsApiController {
                                     @RequestParam(name = "type", required = false) String type) {
 
 
-        cardCreateApiValidator.validate();
+        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
         return new CardDTO();
     }
 
