@@ -74,11 +74,11 @@ public class CardsApiController {
      * Удаление карты.
      */
     @DeleteMapping("/cards/{cardId}")
-    public CardDTO deleteCards(@PathVariable("infoId") String infoId,
-                               @RequestParam(name = "type", required = false) String type) {
+    public CardDTO deleteCards(@PathVariable("cardId") String cardId) {
 
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
-        return new CardDTO();
+        Card removedCard = cardManagerService.removeCard(cardId);
+
+        return cardMapper.mapEntityToDTO(removedCard);
     }
 
 }
