@@ -61,17 +61,21 @@ public class CardsApiController {
     /**
      * Полная замена карты.
      */
+    //Обрабатываем поступающие HTTP PUT запросы по URL "/cards/{cardId}"
     @PutMapping("/cards/{cardId}")
+    // Извлекаем из пути значение переменной {cardId} и присваиваем параметру cardId
     public CardDTO updateCard(@PathVariable("cardId") int cardId,
+                              // Преобразуем тело запроса (JSON) в объект CardDTO и связываем с параметром
                               @RequestBody CardDTO cardDTO) {
-
+        // Валидация входящих данных: проверяем корректность полей CardDTO
         cardCreateApiValidator.validate(cardDTO);
-
+        // Преобразуем DTO в сущность Card (объект базы данных)
         Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        // Устанавливаем идентификатор карты, полученный из пути запроса, в сущность
         cardFromUI.setId(cardId);
-
+        // Вызываем сервис для обновления карты в БД; возвращаем обновлённую сущность
         Card createdCard = cardManagerService.updateCard(cardFromUI);
-
+        // Преобразуем обновлённую сущность обратно в DTO и возвращаем в ответе
         return cardMapper.mapEntityToDTO(createdCard);
     }
 
