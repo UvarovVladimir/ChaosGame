@@ -32,9 +32,7 @@ public class CardManagerService {
 
         // TODO * Сохранить картинку карты на диск
 
-        cardCrudService.create(card);
-
-        return card;
+        return cardCrudService.create(card);
     }
 
     public Card updateCard(Card card) {

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 public class CardMapper {
 
     public Card mapDtoToEntity(CardDTO cardDTO) {
-        return new Card(cardDTO.getName(),
+        return new Card(
+                cardDTO.getName(),
                 cardDTO.getType(),
                 cardDTO.getRang(),
                 cardDTO.getRarety(),
@@ -18,7 +19,9 @@ public class CardMapper {
     }
 
     public CardDTO mapEntityToDTO(Card card) {
-        return new CardDTO(card.getName(),
+        return new CardDTO(
+                String.valueOf(card.getId()),
+                card.getName(),
                 card.getType(),
                 card.getRang(),
                 card.getRarety(),

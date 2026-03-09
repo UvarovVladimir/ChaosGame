@@ -20,8 +20,7 @@ public class CardCrudService {
      * Создание новой карты в БД.
      */
     public Card create(Card card) {
-        cardRepository.save(card);
-        return card;
+        return cardRepository.save(card);
     }
 
     public Card get(String cardId) {
