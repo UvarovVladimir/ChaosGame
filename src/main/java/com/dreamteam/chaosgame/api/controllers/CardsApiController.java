@@ -37,9 +37,9 @@ public class CardsApiController {
 
         cardCreateApiValidator.validate(cardDTO);
 
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        Card card = cardMapper.mapDtoToEntity(cardDTO);
 
-        Card createdCard = cardManagerService.createCard(cardFromUI);
+        Card createdCard = cardManagerService.createCard(card);
 
         return cardMapper.mapEntityToDTO(createdCard);
     }
