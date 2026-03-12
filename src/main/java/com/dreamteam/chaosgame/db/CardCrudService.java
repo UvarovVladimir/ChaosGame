@@ -3,9 +3,8 @@ package com.dreamteam.chaosgame.db;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Сервис отвечающий за СRUD-операции с сущностью {@link  Card}.
- */
+import java.util.Optional;
+
 @Service
 public class CardCrudService {
 
@@ -16,31 +15,33 @@ public class CardCrudService {
         this.cardRepository = cardRepository;
     }
 
-    /**
-     * Создание новой карты в БД.
-     */
     public Card create(Card card) {
         return cardRepository.save(card);
     }
 
     public Card get(String cardId) {
-
-        // TODO !!!!
-        return new Card();
+        int id = Integer.parseInt(cardId);
+        Optional<Card> optional = cardRepository.findById((long) id);
+        return optional.orElse(null);
     }
 
     public Card update(Card card) {
-
-        // TODO !!!!
-        return card;
+        // Проверяем существование
+        Optional<Card> existing = cardRepository.findById((long) card.getId());
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Card not found with id: " + card.getId());
+        }
+        return cardRepository.save(card);
     }
-
 
     public Card remove(int cardId) {
-
-        // TODO !!!!
-        return new Card();
+        Optional<Card> optional = cardRepository.findById((long) cardId);
+        if (optional.isPresent()) {
+            Card card = optional.get();
+            cardRepository.deleteById((long) cardId);
+            return card;
+        } else {
+            throw new RuntimeException("Card not found with id: " + cardId);
+        }
     }
-
-
 }
