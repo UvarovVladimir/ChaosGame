@@ -27,12 +27,12 @@ public class CardManagerService {
 
     }
 
-    public void updateCardFields() {
+    public Card updateCardFields(Card card) {
         // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
 
-
+        return card;
     }
 
     public Card removeCard() {

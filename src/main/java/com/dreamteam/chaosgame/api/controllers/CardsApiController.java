@@ -49,11 +49,11 @@ public class CardsApiController {
      * Частичное обновление полей.
      */
     @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("infoId") String cardId,
-                                    @RequestParam(name = "type", required = false) String type) {
 
+    public CardDTO updateCardFields(@PathVariable("cardId") String cardId,
+                                    @RequestBody CardDTO cardDTO) {
 
-        cardCreateApiValidator.validate();
+        cardCreateApiValidator.validate(cardDTO);
         return new CardDTO();
     }
 
