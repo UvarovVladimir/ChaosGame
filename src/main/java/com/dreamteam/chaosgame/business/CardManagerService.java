@@ -44,11 +44,38 @@ public class CardManagerService {
 
     }
 
-    public Card updateCardFields() {
-        // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
+    public Card updateCardFields(Card card) {
+        // TODO сделать валидацию карты
 
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return new Card();
+        // достать карту по ID
+        int cardId = card.getId();
+        Card cardFromDb = cardCrudService.get(cardId);
+
+
+        // Обновить все поля пришедшие из UI в объекте из БД
+        if (card.getName() != null) {
+            cardFromDb.setName(card.getName());
+        }
+        if (card.getRang() != null) {
+            cardFromDb.setRang(card.getRang());
+        }
+        if (card.getDuration() != null) {
+            cardFromDb.setDuration(card.getDuration());
+        }
+        if (card.getRecoveryTime() != null) {
+            cardFromDb.setRecoveryTime(card.getRecoveryTime());
+        }
+        if (card.getRarety() != null) {
+            cardFromDb.setRarety(card.getRarety());
+        }
+        if (card.getType() != null) {
+            cardFromDb.setType(card.getType());
+        }
+
+
+        // Вызвать обновление
+
+        return cardCrudService.update(cardFromDb);
 
     }
 
