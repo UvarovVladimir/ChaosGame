@@ -1,6 +1,8 @@
 package com.dreamteam.chaosgame.business;
 
 import com.dreamteam.chaosgame.db.Card;
+import com.dreamteam.chaosgame.db.CardCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,13 +11,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardManagerService {
 
+    private final CardValidationService cardValidationService;
+    private final CardCrudService cardCrudService;
 
+    @Autowired
+    public CardManagerService(CardValidationService cardValidationService,
+                              CardCrudService cardCrudService) {
+
+        this.cardValidationService = cardValidationService;
+        this.cardCrudService = cardCrudService;
+    }
+
+    /**
+     * Создание карты.
+     * Сохранение карты в БД.
+     */
     public Card createCard(Card card) {
 
-        // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
+        cardValidationService.validateNewCard(card);
 
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return card;
+        // TODO * Сохранить картинку карты на диск
+
+        return cardCrudService.create(card);
     }
 
     public Card updateCard(Card card) {
