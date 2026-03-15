@@ -49,11 +49,11 @@ public class CardsApiController {
      * Частичное обновление полей.
      */
     @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("infoId") String infoId,
-                                    @RequestParam(name = "type", required = false) String type) {
 
+    public CardDTO updateCardFields(@PathVariable("cardId") String cardId,
+                                    @RequestBody CardDTO cardDTO) {
 
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
+        cardCreateApiValidator.validate(cardDTO);
         return new CardDTO();
     }
 

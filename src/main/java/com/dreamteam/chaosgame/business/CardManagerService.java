@@ -44,12 +44,12 @@ public class CardManagerService {
 
     }
 
-    public Card updateCardFields() {
+    public Card updateCardFields(Card card) {
         // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return new Card();
 
+        return card;
     }
 
     public Card removeCard(String cardId) {
