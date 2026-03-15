@@ -1,9 +1,15 @@
 package com.dreamteam.chaosgame.business;
 
+import com.dreamteam.chaosgame.api.dtos.CardRang;
+import com.dreamteam.chaosgame.api.dtos.CardType;
+import com.dreamteam.chaosgame.api.dtos.Rarety;
 import com.dreamteam.chaosgame.db.Card;
 import com.dreamteam.chaosgame.db.CardCrudService;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
@@ -88,5 +94,15 @@ public class CardManagerService {
     public Card getCard(String cardId) {
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
         return new Card();
+    }
+
+    public List<Card> getCardsByParams(@Nullable String name,
+                                       @Nullable CardType type,
+                                       @Nullable CardRang rang,
+                                       @Nullable Rarety rarety,
+                                       int offset,
+                                       int limit) {
+
+        return cardCrudService.getCardsByParams(name, type, rang, rarety, offset, limit);
     }
 }

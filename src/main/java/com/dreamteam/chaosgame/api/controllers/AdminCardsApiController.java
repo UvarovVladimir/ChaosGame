@@ -8,15 +8,15 @@ import com.dreamteam.chaosgame.db.Card;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class CardsApiController {
+public class AdminCardsApiController {
 
     private final CardManagerService cardManagerService;
     private final CardCreateApiValidator cardCreateApiValidator;
     private final CardMapper cardMapper;
 
-    public CardsApiController(CardManagerService cardManagerService,
-                              CardCreateApiValidator cardCreateApiValidator,
-                              CardMapper cardMapper) {
+    public AdminCardsApiController(CardManagerService cardManagerService,
+                                   CardCreateApiValidator cardCreateApiValidator,
+                                   CardMapper cardMapper) {
 
         this.cardManagerService = cardManagerService;
         this.cardCreateApiValidator = cardCreateApiValidator;
