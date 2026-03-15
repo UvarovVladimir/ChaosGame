@@ -23,7 +23,7 @@ public class CardCrudService {
         return cardRepository.save(card);
     }
 
-    public Card get(String cardId) {
+    public Card get(int cardId) {
 
         // TODO !!!!
         return new Card();
@@ -31,8 +31,14 @@ public class CardCrudService {
 
     public Card update(Card card) {
 
+        return cardRepository.save(card);
+    }
+
+    public Card updateFields(Card card) {
+
         // TODO !!!!
-        return card;
+
+        return cardRepository.save(card);
     }
 
 
