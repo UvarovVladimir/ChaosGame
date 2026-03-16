@@ -1,12 +1,21 @@
 package com.dreamteam.chaosgame.business;
 
+import com.dreamteam.chaosgame.api.dtos.CardRang;
+import com.dreamteam.chaosgame.api.dtos.CardType;
+import com.dreamteam.chaosgame.api.dtos.Rarety;
 import com.dreamteam.chaosgame.db.Card;
 import com.dreamteam.chaosgame.db.CardCrudService;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import java.util.List;
+
+/**
+ * TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
+ */
 @Service
 public class CardManagerService {
 
@@ -20,9 +29,15 @@ public class CardManagerService {
         this.cardCrudService = cardCrudService;
     }
 
+    /**
+     * Создание карты.
+     * Сохранение карты в БД.
+     */
     public Card createCard(Card card) {
         cardValidationService.validateNewCard(card);
-        // TODO: сохранить картинку карты на диск
+
+        // TODO * Сохранить картинку карты на диск
+
         return cardCrudService.create(card);
     }
 
@@ -36,38 +51,36 @@ public class CardManagerService {
         return cardCrudService.update(card);
     }
 
-    public Card updateCardFields(String cardId, Map<String, Object> updates) {
-        Card existing = cardCrudService.get(cardId);
-        if (existing == null) {
+    public Card updateCardFields(String cardId, Card card) {
+        Card cardFromDb = cardCrudService.get(cardId);
+        if (cardFromDb == null) {
             throw new RuntimeException("Card with id " + cardId + " not found");
         }
-        // Применяем обновления (упрощённо, через рефлексию или вручную)
-        // В реальном проекте лучше использовать специальный DTO или JsonPatch
-        // Здесь для простоты реализуем через проверку ключей
-        updates.forEach((key, value) -> {
-            switch (key) {
-                case "name":
-                    existing.setName((String) value);
-                    break;
-                case "type":
-                    existing.setType(com.dreamteam.chaosgame.api.dtos.CardType.valueOf((String) value));
-                    break;
-                case "rang":
-                    existing.setRang(com.dreamteam.chaosgame.api.dtos.CardRang.valueOf((String) value));
-                    break;
-                case "rarety":
-                    existing.setRarety(com.dreamteam.chaosgame.api.dtos.Rarety.valueOf((String) value));
-                    break;
-                case "duration":
-                    // Duration можно передавать как число секунд или строку
-                    existing.setDuration(java.time.Duration.parse((String) value));
-                    break;
-                case "recoveryTime":
-                    existing.setRecoveryTime(java.time.Duration.parse((String) value));
-                    break;
-                // поле id не обновляем
-            }
-        });
+        // достать карту по ID
+        int cardId = card.getId();
+        Card cardFromDb = cardCrudService.get(cardId);
+
+
+        // Обновить все поля пришедшие из UI в объекте из БД
+        if (card.getName() != null) {
+            cardFromDb.setName(card.getName());
+        }
+        if (card.getRang() != null) {
+            cardFromDb.setRang(card.getRang());
+        }
+        if (card.getDuration() != null) {
+            cardFromDb.setDuration(card.getDuration());
+        }
+        if (card.getRecoveryTime() != null) {
+            cardFromDb.setRecoveryTime(card.getRecoveryTime());
+        }
+        if (card.getRarety() != null) {
+            cardFromDb.setRarety(card.getRarety());
+        }
+        if (card.getType() != null) {
+            cardFromDb.setType(card.getType());
+        }
+
         return cardCrudService.update(existing);
     }
 
@@ -81,5 +94,15 @@ public class CardManagerService {
             throw new RuntimeException("Card with id " + cardId + " not found");
         }
         return card;
+    }
+
+    public List<Card> getCardsByParams(@Nullable String name,
+                                       @Nullable CardType type,
+                                       @Nullable CardRang rang,
+                                       @Nullable Rarety rarety,
+                                       int offset,
+                                       int limit) {
+
+        return cardCrudService.getCardsByParams(name, type, rang, rarety, offset, limit);
     }
 }

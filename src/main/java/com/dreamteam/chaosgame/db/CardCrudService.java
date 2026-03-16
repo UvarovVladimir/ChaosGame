@@ -1,10 +1,18 @@
 package com.dreamteam.chaosgame.db;
 
+import com.dreamteam.chaosgame.api.dtos.CardRang;
+import com.dreamteam.chaosgame.api.dtos.CardType;
+import com.dreamteam.chaosgame.api.dtos.Rarety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import java.util.List;
+
+/**
+ * Сервис отвечающий за СRUD-операции с сущностью {@link  Card}.
+ */
 @Service
 public class CardCrudService {
 
@@ -25,7 +33,17 @@ public class CardCrudService {
         return optional.orElse(null);
     }
 
-    public Card update(Card card) {
+    public  public List<Card> getCardsByParams(String name,
+                                               CardType type,
+                                               CardRang rang,
+                                               Rarety rarety,
+                                               int offset,
+                                               int limit) {
+
+
+        return cardRepository.getCardsByParams(name, type, rang, rarety, offset, limit);
+    }
+    Card update(Card card) {
         // Проверяем существование
         Optional<Card> existing = cardRepository.findById((long) card.getId());
         if (existing.isEmpty()) {
