@@ -12,14 +12,14 @@ public class CardsByParamsResponseDTO {
 
     private boolean hasNext;
 
-    private int totalCount;
+    private long totalCount;
 
 
     public CardsByParamsResponseDTO(List<CardDTO> cards,
                                     int limit,
                                     int offset,
                                     boolean hasNext,
-                                    int totalCount) {
+                                    long totalCount) {
         this.cards = cards;
         this.limit = limit;
         this.offset = offset;
@@ -59,11 +59,11 @@ public class CardsByParamsResponseDTO {
         this.hasNext = hasNext;
     }
 
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
 }
