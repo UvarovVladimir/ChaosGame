@@ -51,14 +51,15 @@ public class CardManagerService {
         return cardCrudService.update(card);
     }
 
-    public Card updateCardFields(String cardId, Card card) {
-        Card cardFromDb = cardCrudService.get(cardId);
+    public Card updateCardFields(Card card) {
+        int cardId = card.getId();
+        Card cardFromDb = cardCrudService.get(String.valueOf(cardId));
         if (cardFromDb == null) {
             throw new RuntimeException("Card with id " + cardId + " not found");
         }
         // достать карту по ID
-        int cardId = card.getId();
-        Card cardFromDb = cardCrudService.get(cardId);
+        //
+       // Card cardFromDb = cardCrudService.get(cardId);
 
 
         // Обновить все поля пришедшие из UI в объекте из БД
@@ -81,7 +82,7 @@ public class CardManagerService {
             cardFromDb.setType(card.getType());
         }
 
-        return cardCrudService.update(existing);
+        return cardCrudService.update(cardFromDb);
     }
 
     public Card removeCard(String cardId) {

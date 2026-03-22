@@ -45,8 +45,11 @@ public class AdminCardsApiController {
      */
     @PatchMapping("/cards/{cardId}")
     public CardDTO updateCardFields(@PathVariable("cardId") String cardId,
-                                    @RequestBody Map<String, Object> updates) {
-        Card updatedCard = cardManagerService.updateCardFields(cardId, updates);
+                                    @RequestBody CardDTO cardDTO) {
+        cardCreateApiValidator.validate(cardDTO);
+        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        cardFromUI.setId(Integer.valueOf(cardId));
+        Card updatedCard = cardManagerService.updateCardFields(cardFromUI);
         return cardMapper.mapEntityToDTO(updatedCard);
     }
 

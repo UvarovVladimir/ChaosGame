@@ -33,7 +33,7 @@ public class CardCrudService {
         return optional.orElse(null);
     }
 
-    public  public List<Card> getCardsByParams(String name,
+    public List<Card> getCardsByParams(String name,
                                                CardType type,
                                                CardRang rang,
                                                Rarety rarety,
@@ -43,7 +43,7 @@ public class CardCrudService {
 
         return cardRepository.getCardsByParams(name, type, rang, rarety, offset, limit);
     }
-    Card update(Card card) {
+    public Card update(Card card) {
         // Проверяем существование
         Optional<Card> existing = cardRepository.findById((long) card.getId());
         if (existing.isEmpty()) {
