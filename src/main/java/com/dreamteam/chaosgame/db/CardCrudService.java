@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import java.util.List;
-
 /**
  * Сервис отвечающий за СRUD-операции с сущностью {@link  Card}.
  */
@@ -26,7 +24,6 @@ public class CardCrudService {
     public CardCrudService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
     }
-
 
 
     public Card get(String cardId) {

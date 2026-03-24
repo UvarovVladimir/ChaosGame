@@ -20,20 +20,14 @@ public class UserCardsApiController {
 
 
     @Autowired
-    public UserCardsApiController(CardManagerService cardManagerService,
-                                  CardMapper cardMapper) {
+    public UserCardsApiController(CardManagerService cardManagerService, CardMapper cardMapper) {
         this.cardManagerService = cardManagerService;
         this.cardMapper = cardMapper;
     }
 
 
     @GetMapping("/cards")
-    public CardsByParamsResponseDTO getCards(@RequestParam(name = "name", required = false) String name,
-                                             @RequestParam(name = "type", required = false) CardType type,
-                                             @RequestParam(name = "rang", required = false) CardRang rang,
-                                             @RequestParam(name = "rarety", required = false) Rarety rarety,
-                                             @RequestParam(name = "offset", required = true) int offset,
-                                             @RequestParam(name = "limit", required = true) int limit) {
+    public CardsByParamsResponseDTO getCards(@RequestParam(name = "name", required = false) String name, @RequestParam(name = "type", required = false) CardType type, @RequestParam(name = "rang", required = false) CardRang rang, @RequestParam(name = "rarety", required = false) Rarety rarety, @RequestParam(name = "offset", required = true) int offset, @RequestParam(name = "limit", required = true) int limit) {
 
         // Запросить слой бизнес логики чтобы вернул карты подходящие под условия
         Page<Card> cardsByParams = cardManagerService.getCardsByParams(name, type, rang, rarety, offset, limit);
@@ -44,9 +38,7 @@ public class UserCardsApiController {
 
 
         // перемапать Card -> CardDTO
-        List<CardDTO> dtoList = cardsByParams.stream()
-                .map(card -> cardMapper.mapEntityToDTO(card))
-                .toList();
+        List<CardDTO> dtoList = cardsByParams.stream().map(card -> cardMapper.mapEntityToDTO(card)).toList();
 
         boolean hasNext = offset + limit < totalCount;
 
