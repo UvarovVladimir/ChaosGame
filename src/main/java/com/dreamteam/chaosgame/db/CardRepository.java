@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificationExecutor<Card> {
-
+    Optional<Card> findByName(String name);
 }
