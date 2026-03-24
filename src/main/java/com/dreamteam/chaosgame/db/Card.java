@@ -55,52 +55,52 @@ public class Card {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public CardType getType() {
-        return type;
-    }
-
-    public CardRang getRang() {
-        return rang;
-    }
-
-    public Rarety getRarety() {
-        return rarety;
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public Duration getRecoveryTime() {
-        return recoveryTime;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public CardType getType() {
+        return type;
+    }
+
     public void setType(CardType type) {
         this.type = type;
+    }
+
+    public CardRang getRang() {
+        return rang;
     }
 
     public void setRang(CardRang rang) {
         this.rang = rang;
     }
 
+    public Rarety getRarety() {
+        return rarety;
+    }
+
     public void setRarety(Rarety rarety) {
         this.rarety = rarety;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public Duration getRecoveryTime() {
+        return recoveryTime;
     }
 
     public void setRecoveryTime(Duration recoveryTime) {

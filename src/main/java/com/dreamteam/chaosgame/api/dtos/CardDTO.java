@@ -18,13 +18,7 @@ public class CardDTO {
     public CardDTO() {
     }
 
-    public CardDTO(String id,
-                   String name,
-                   CardType type,
-                   CardRang rang,
-                   Rarety rarety,
-                   Duration duration,
-                   Duration recoveryTime) {
+    public CardDTO(String id, String name, CardType type, CardRang rang, Rarety rarety, Duration duration, Duration recoveryTime) {
 
         this.id = id;
         this.name = name;

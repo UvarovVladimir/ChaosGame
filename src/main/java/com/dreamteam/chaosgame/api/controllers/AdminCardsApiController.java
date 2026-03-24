@@ -7,7 +7,6 @@ import com.dreamteam.chaosgame.business.CardManagerService;
 import com.dreamteam.chaosgame.db.Card;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
 public class AdminCardsApiController {
@@ -16,17 +15,14 @@ public class AdminCardsApiController {
     private final CardCreateApiValidator cardCreateApiValidator;
     private final CardMapper cardMapper;
 
-    public AdminCardsApiController(CardManagerService cardManagerService,
-                                   CardCreateApiValidator cardCreateApiValidator,
-                                   CardMapper cardMapper) {
+    public AdminCardsApiController(CardManagerService cardManagerService, CardCreateApiValidator cardCreateApiValidator, CardMapper cardMapper) {
         this.cardManagerService = cardManagerService;
         this.cardCreateApiValidator = cardCreateApiValidator;
         this.cardMapper = cardMapper;
     }
 
     @GetMapping("/cards/{cardId}")
-    public CardDTO getCard(@PathVariable("cardId") String cardId,
-                           @RequestParam(name = "type", required = false) String type) {
+    public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
         // TODO: возможно, использовать type для фильтрации, пока игнорируем
         Card card = cardManagerService.getCard(cardId);
         return cardMapper.mapEntityToDTO(card);
@@ -44,8 +40,7 @@ public class AdminCardsApiController {
      * Частичное обновление полей.
      */
     @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("cardId") String cardId,
-                                    @RequestBody CardDTO cardDTO) {
+    public CardDTO updateCardFields(@PathVariable("cardId") String cardId, @RequestBody CardDTO cardDTO) {
         cardCreateApiValidator.validate(cardDTO);
         Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
         cardFromUI.setId(Integer.valueOf(cardId));
@@ -57,8 +52,7 @@ public class AdminCardsApiController {
      * Полная замена карты.
      */
     @PutMapping("/cards/{cardId}")
-    public CardDTO updateCard(@PathVariable("cardId") int cardId,
-                              @RequestBody CardDTO cardDTO) {
+    public CardDTO updateCard(@PathVariable("cardId") int cardId, @RequestBody CardDTO cardDTO) {
         cardCreateApiValidator.validate(cardDTO);
         Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
         cardFromUI.setId(cardId);

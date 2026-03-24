@@ -10,10 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
-import java.util.List;
-
 /**
  * TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
  */
@@ -60,7 +56,7 @@ public class CardManagerService {
         }
         // достать карту по ID
         //
-       // Card cardFromDb = cardCrudService.get(cardId);
+        // Card cardFromDb = cardCrudService.get(cardId);
 
 
         // Обновить все поля пришедшие из UI в объекте из БД
