@@ -5,6 +5,7 @@ import com.dreamteam.chaosgame.api.mappers.CardMapper;
 import com.dreamteam.chaosgame.business.CardManagerService;
 import com.dreamteam.chaosgame.db.Card;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,22 +35,22 @@ public class UserCardsApiController {
                                              @RequestParam(name = "offset", required = true) int offset,
                                              @RequestParam(name = "limit", required = true) int limit) {
 
-        // TODO Запросить слой бизнес логики чтобы вернул карты подходящие под условия
-        List<Card> cardsByParams = cardManagerService.getCardsByParams(name, type, rang, rarety, offset, limit);
+        // Запросить слой бизнес логики чтобы вернул карты подходящие под условия
+        Page<Card> cardsByParams = cardManagerService.getCardsByParams(name, type, rang, rarety, offset, limit);
 
 
-        //TODO Посчитать общее число карт подходящих под критерии
-        int totalCount = 80; /// ХАРДКО ПОКА  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Посчитать общее число карт подходящих под критерии
+        long totalCount = cardsByParams.getTotalElements();
 
 
-        // TODO перемапать Card -> CardDTO
+        // перемапать Card -> CardDTO
         List<CardDTO> dtoList = cardsByParams.stream()
                 .map(card -> cardMapper.mapEntityToDTO(card))
                 .toList();
 
         boolean hasNext = offset + limit < totalCount;
 
-        // TODO Сформировать и отдать ответ с учетом пагинации
+        // Сформировать и отдать ответ с учетом пагинации
         return new CardsByParamsResponseDTO(dtoList, limit, offset, hasNext, totalCount);
 
     }
