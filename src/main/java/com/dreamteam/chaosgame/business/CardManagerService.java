@@ -82,7 +82,7 @@ public class CardManagerService {
 
         // Вызвать обновление
 
-        return cardCrudService.update(cardFromDb);
+        return cardCrudService.updateFields(cardFromDb);
     }
 
     public Card removeCard(String cardId) {

@@ -73,8 +73,11 @@ public class CardCrudService {
 
     public Card updateFields(Card card) {
 
-        // TODO !!!!
-
+        // Проверяем существование
+        Optional<Card> existing = cardRepository.findById((long) card.getId());
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Card not found with id: " + card.getId());
+        }
         return cardRepository.save(card);
     }
 
