@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 /**
  * Сервис отвечающий за СRUD-операции с сущностью {@link  Card}.
@@ -60,7 +61,11 @@ public class CardCrudService {
     }
 
     public Card update(Card card) {
-
+        // Проверяем существование
+        Optional<Card> existing = cardRepository.findById((long) card.getId());
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Card not found with id: " + card.getId());
+        }
         return cardRepository.save(card);
     }
 
