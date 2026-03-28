@@ -34,6 +34,8 @@ public class Card {
     @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
+    // TODO !!!!!!! Добавить поле !!!
+
     public Card() {
     }
 

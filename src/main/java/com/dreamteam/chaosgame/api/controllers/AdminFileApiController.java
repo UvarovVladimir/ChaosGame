@@ -19,89 +19,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-public class AdminCardsApiController {
+public class AdminFileApiController {
 
     private final CardManagerService cardManagerService;
     private final CardCreateApiValidator cardCreateApiValidator;
     private final CardMapper cardMapper;
 
-    public AdminCardsApiController(CardManagerService cardManagerService,
-                                   CardCreateApiValidator cardCreateApiValidator,
-                                   CardMapper cardMapper) {
+    public AdminFileApiController(CardManagerService cardManagerService,
+                                  CardCreateApiValidator cardCreateApiValidator,
+                                  CardMapper cardMapper) {
 
         this.cardManagerService = cardManagerService;
         this.cardCreateApiValidator = cardCreateApiValidator;
         this.cardMapper = cardMapper;
     }
 
-    @GetMapping("/cards/{cardId}")
-    public CardDTO getCard(@PathVariable("infoId") String infoId,
-                           @RequestParam(name = "type", required = false) String type) {
-
-        // TODO !!!!
-        return new CardDTO();
-    }
-
-
-    @PostMapping("/cards")
-    public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
-
-        cardCreateApiValidator.validate(cardDTO);
-
-        Card card = cardMapper.mapDtoToEntity(cardDTO);
-
-        Card createdCard = cardManagerService.createCard(card);
-
-        return cardMapper.mapEntityToDTO(createdCard);
-    }
-
-
-    /**
-     * Частичное обновление полей.
-     */
-    @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("infoId") String infoId,
-                                    @RequestParam(name = "type", required = false) String type) {
-
-
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
-        return new CardDTO();
-    }
-
-
-    /**
-     * Полная замена карты.
-     */
-    @PutMapping("/cards/{cardId}")
-    public CardDTO updateCard(@PathVariable("cardId") int cardId,
-                              @RequestBody CardDTO cardDTO) {
-
-        cardCreateApiValidator.validate(cardDTO);
-
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
-        cardFromUI.setId(cardId);
-
-        Card createdCard = cardManagerService.updateCard(cardFromUI);
-
-        return cardMapper.mapEntityToDTO(createdCard);
-    }
-
-
-    /**
-     * Удаление карты.
-     */
-    @DeleteMapping("/cards/{cardId}")
-    public CardDTO deleteCards(@PathVariable("cardId") String cardId) {
-
-        Card removedCard = cardManagerService.removeCard(cardId);
-
-        return cardMapper.mapEntityToDTO(removedCard);
-    }
-
-
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(
-            @RequestParam("cardId") int cardId,
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "description", required = false) String description) {
 
@@ -121,8 +55,6 @@ public class AdminCardsApiController {
             // Например, сохранение на диск:
             String uploadPath = "/home/slider/Downloads/ChaosGame/" + originalFilename;
             file.transferTo(new java.io.File(uploadPath));
-
-            // TODO !!!!!  Запись сохраненной картинки в БД карты
 
             return ResponseEntity.ok("Файл успешно загружен: " + originalFilename);
 
