@@ -99,7 +99,7 @@ public class AdminCardsApiController {
     }
 
 
-    @PostMapping("/upload")
+    @PostMapping("/cards/{cardId}/upload")
     public ResponseEntity<String> uploadFile(
             @RequestParam("cardId") int cardId,
             @RequestParam("file") MultipartFile file,
@@ -131,33 +131,4 @@ public class AdminCardsApiController {
                     .body("Ошибка при загрузке файла: " + e.getMessage());
         }
     }
-
-
-    @GetMapping("/download/{filename}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get("/home/slider/Downloads/ChaosGame/").resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (!resource.exists()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            // Определяем Content-Type
-            String contentType = Files.probeContentType(filePath);
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
-
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
 }

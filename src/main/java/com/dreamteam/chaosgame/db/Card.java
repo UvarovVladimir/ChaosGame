@@ -34,7 +34,8 @@ public class Card {
     @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
-    // TODO !!!!!!! Добавить поле !!!
+    @Column(name = "URL", nullable = true)
+    private String url;
 
     public Card() {
     }
@@ -44,13 +45,14 @@ public class Card {
                 CardRang rang,
                 Rarety rarety,
                 Duration duration,
-                Duration recoveryTime) {
+                Duration recoveryTime, String url) {
         this.name = name;
         this.type = type;
         this.rang = rang;
         this.rarety = rarety;
         this.duration = duration;
         this.recoveryTime = recoveryTime;
+        this.url = url;
     }
 
     public int getId() {
@@ -80,7 +82,9 @@ public class Card {
     public Duration getRecoveryTime() {
         return recoveryTime;
     }
-
+    public String getUrl() {
+        return url;
+    }
     public void setId(int id) {
         this.id = id;
     }
@@ -107,5 +111,9 @@ public class Card {
 
     public void setRecoveryTime(Duration recoveryTime) {
         this.recoveryTime = recoveryTime;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
