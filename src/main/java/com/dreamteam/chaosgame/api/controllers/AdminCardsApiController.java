@@ -109,27 +109,14 @@ public class AdminCardsApiController {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Файл не выбран");
         }
-
+        String imagePath;
         try {
-            // Получаем информацию о файле
-            String originalFilename = file.getOriginalFilename();
-            String contentType = file.getContentType();
-            long size = file.getSize();
-            byte[] content = file.getBytes();
-
-            // Здесь логика сохранения файла
-            // Например, сохранение на диск:
-            String uploadPath = "/home/slider/Downloads/ChaosGame/" + originalFilename;
-            file.transferTo(new java.io.File(uploadPath));
-
-            // TODO !!!!!  Запись сохраненной картинки в БД карты
-
-            return ResponseEntity.ok("Файл успешно загружен: " + originalFilename);
-
+            imagePath = cardManagerService.uploadCardIcon(cardId, file);
         } catch (IOException e) {
-            return ResponseEntity.internalServerError()
-                    .body("Ошибка при загрузке файла: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Проблемы с загрузкой файла");
         }
+
+        return ResponseEntity.ok(imagePath);
     }
 
 

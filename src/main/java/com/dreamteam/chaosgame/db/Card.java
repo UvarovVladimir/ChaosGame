@@ -34,7 +34,8 @@ public class Card {
     @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
-    // TODO !!!!!!! Добавить поле !!!
+    @Column(name = "originImage", nullable = false)
+    private String originImage;
 
     public Card() {
     }
@@ -44,13 +45,15 @@ public class Card {
                 CardRang rang,
                 Rarety rarety,
                 Duration duration,
-                Duration recoveryTime) {
+                Duration recoveryTime,
+                String originImage) {
         this.name = name;
         this.type = type;
         this.rang = rang;
         this.rarety = rarety;
         this.duration = duration;
         this.recoveryTime = recoveryTime;
+        this.originImage = originImage;
     }
 
     public int getId() {
@@ -81,6 +84,10 @@ public class Card {
         return recoveryTime;
     }
 
+    public String getOriginImage() {
+        return originImage;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -108,4 +115,9 @@ public class Card {
     public void setRecoveryTime(Duration recoveryTime) {
         this.recoveryTime = recoveryTime;
     }
+
+    public void setOriginImage(String originImage) {
+        this.originImage = originImage;
+    }
+
 }
