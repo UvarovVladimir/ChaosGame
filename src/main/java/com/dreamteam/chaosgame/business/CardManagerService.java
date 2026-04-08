@@ -44,12 +44,13 @@ public class CardManagerService {
     }
 
     public Card updateCard(Card card) {
-
-        // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
-
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return card;
-
+        // Проверяем, что карта существует
+        Card existing = cardCrudService.get(card.getId());
+        if (existing == null) {
+            throw new RuntimeException("Card with id " + card.getId() + " not found");
+        }
+        // Можно добавить бизнес-валидацию для обновления
+        return cardCrudService.update(card);
     }
 
     public Card updateCardFields(Card card) {
