@@ -17,7 +17,7 @@ public class CardDTO {
     private String originImage;
 
 
-    public CardDTO() {
+    public CardDTO(String name, CardType type, CardRang rang, Rarety rarety, Duration duration, Duration recoveryTime) {
     }
 
     public CardDTO(String id,

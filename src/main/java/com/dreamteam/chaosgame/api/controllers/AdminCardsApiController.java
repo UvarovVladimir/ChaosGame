@@ -35,11 +35,18 @@ public class AdminCardsApiController {
     }
 
     @GetMapping("/cards/{cardId}")
-    public CardDTO getCard(@PathVariable("infoId") String infoId,
-                           @RequestParam(name = "type", required = false) String type) {
+    public CardDTO getCard(@PathVariable("cardId") String cardId) {
+
+        Card card = cardManagerService.getCard(cardId);
 
         // TODO !!!!
-        return new CardDTO();
+        return new CardDTO(card.getName(),
+                card.getType(),
+                card.getRang(),
+                card.getRarety(),
+                card.getDuration(),
+                card.getRecoveryTime()
+        );
     }
 
 
@@ -65,7 +72,7 @@ public class AdminCardsApiController {
 
 
         // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
-        return new CardDTO();
+        return new CardDTO(card.getName(), card.getType(), card.getRang(), card.getRarety(), card.getDuration(), card.getRecoveryTime());
     }
 
 
