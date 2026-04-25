@@ -14,11 +14,20 @@ public class CardDTO {
     private Rarety rarety;
     private Duration duration;
     private Duration recoveryTime;
+    private String originImage;
+
 
     public CardDTO() {
     }
 
-    public CardDTO(String id, String name, CardType type, CardRang rang, Rarety rarety, Duration duration, Duration recoveryTime) {
+    public CardDTO(String id,
+                   String name,
+                   CardType type,
+                   CardRang rang,
+                   Rarety rarety,
+                   Duration duration,
+                   Duration recoveryTime,
+                   String originImage) {
 
         this.id = id;
         this.name = name;
@@ -27,6 +36,7 @@ public class CardDTO {
         this.rarety = rarety;
         this.duration = duration;
         this.recoveryTime = recoveryTime;
+        this.originImage = originImage;
     }
 
     public String getId() {
@@ -55,6 +65,10 @@ public class CardDTO {
 
     public Duration getRecoveryTime() {
         return recoveryTime;
+    }
+
+    public String getOriginImage() {
+        return originImage;
     }
 
 }

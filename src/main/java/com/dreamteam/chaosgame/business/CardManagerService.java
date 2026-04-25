@@ -9,6 +9,9 @@ import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
@@ -85,6 +88,31 @@ public class CardManagerService {
         return cardCrudService.updateFields(cardFromDb);
     }
 
+    /**
+     * @return path до сохраненного файла.
+     */
+    public String uploadCardIcon(int cardId, MultipartFile file) throws IOException {
+
+        Card card = cardCrudService.get(cardId);
+        String uploadPath = "/home/slider/Downloads/ChaosGame/" + cardId;
+
+        // Получаем информацию о файле
+        String originalFilename = file.getOriginalFilename();
+        String contentType = file.getContentType();
+        long size = file.getSize();
+        byte[] content = file.getBytes();
+
+        // Здесь логика сохранения файла
+        // Например, сохранение на диск:
+        file.transferTo(new java.io.File(uploadPath));
+
+
+        card.setOriginImage(uploadPath);
+
+        cardCrudService.update(card);
+        return uploadPath;
+    }
+
     public Card removeCard(String cardId) {
         return cardCrudService.remove(Integer.parseInt(cardId));
     }
@@ -106,4 +134,5 @@ public class CardManagerService {
 
         return cardCrudService.getCardsByParams(name, type, rang, rarety, pageNumber, limit);
     }
+
 }

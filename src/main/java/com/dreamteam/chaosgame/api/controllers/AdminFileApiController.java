@@ -18,75 +18,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
 @RestController
-public class AdminCardsApiController {
+public class AdminFileApiController {
 
     private final CardManagerService cardManagerService;
     private final CardCreateApiValidator cardCreateApiValidator;
     private final CardMapper cardMapper;
 
-    public AdminCardsApiController(CardManagerService cardManagerService,
-                                   CardCreateApiValidator cardCreateApiValidator,
-                                   CardMapper cardMapper) {
+    public AdminFileApiController(CardManagerService cardManagerService,
+                                  CardCreateApiValidator cardCreateApiValidator,
+                                  CardMapper cardMapper) {
 
         this.cardManagerService = cardManagerService;
         this.cardCreateApiValidator = cardCreateApiValidator;
         this.cardMapper = cardMapper;
     }
 
-    @GetMapping("/cards/{cardId}")
-    public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
-        // TODO: возможно, использовать type для фильтрации, пока игнорируем
-        Card card = cardManagerService.getCard(cardId);
-        return cardMapper.mapEntityToDTO(card);
-    }
-
-    @PostMapping("/cards")
-    public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
-        cardCreateApiValidator.validate(cardDTO);
-        Card card = cardMapper.mapDtoToEntity(cardDTO);
-        Card createdCard = cardManagerService.createCard(card);
-        return cardMapper.mapEntityToDTO(createdCard);
-    }
-
-    /**
-     * Частичное обновление полей.
-     */
-    @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("cardId") String cardId, @RequestBody CardDTO cardDTO) {
-        cardCreateApiValidator.validate(cardDTO);
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
-        cardFromUI.setId(Integer.valueOf(cardId));
-        Card updatedCard = cardManagerService.updateCardFields(cardFromUI);
-        return cardMapper.mapEntityToDTO(updatedCard);
-    }
-
-    /**
-     * Полная замена карты.
-     */
-    @PutMapping("/cards/{cardId}")
-    public CardDTO updateCard(@PathVariable("cardId") int cardId, @RequestBody CardDTO cardDTO) {
-        cardCreateApiValidator.validate(cardDTO);
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
-        cardFromUI.setId(cardId);
-        Card updatedCard = cardManagerService.updateCard(cardFromUI);
-        return cardMapper.mapEntityToDTO(updatedCard);
-    }
-
-    /**
-     * Удаление карты.
-     */
-    @DeleteMapping("/cards/{cardId}")
-    public CardDTO deleteCards(@PathVariable("cardId") String cardId) {
-        Card removedCard = cardManagerService.removeCard(cardId);
-        return cardMapper.mapEntityToDTO(removedCard);
-    }
-
-
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(
-            @RequestParam("cardId") int cardId,
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "description", required = false) String description) {
 
@@ -94,14 +43,25 @@ public class AdminCardsApiController {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Файл не выбран");
         }
-        String imagePath;
-        try {
-            imagePath = cardManagerService.uploadCardIcon(cardId, file);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Проблемы с загрузкой файла");
-        }
 
-        return ResponseEntity.ok(imagePath);
+        try {
+            // Получаем информацию о файле
+            String originalFilename = file.getOriginalFilename();
+            String contentType = file.getContentType();
+            long size = file.getSize();
+            byte[] content = file.getBytes();
+
+            // Здесь логика сохранения файла
+            // Например, сохранение на диск:
+            String uploadPath = "/home/slider/Downloads/ChaosGame/" + originalFilename;
+            file.transferTo(new java.io.File(uploadPath));
+
+            return ResponseEntity.ok("Файл успешно загружен: " + originalFilename);
+
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError()
+                    .body("Ошибка при загрузке файла: " + e.getMessage());
+        }
     }
 
 

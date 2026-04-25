@@ -34,6 +34,9 @@ public class Card {
     @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
+    @Column(name = "originImage", nullable = false)
+    private String originImage;
+
     public Card() {
     }
 
@@ -42,68 +45,79 @@ public class Card {
                 CardRang rang,
                 Rarety rarety,
                 Duration duration,
-                Duration recoveryTime) {
+                Duration recoveryTime,
+                String originImage) {
         this.name = name;
         this.type = type;
         this.rang = rang;
         this.rarety = rarety;
         this.duration = duration;
         this.recoveryTime = recoveryTime;
+        this.originImage = originImage;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public CardType getType() {
         return type;
     }
 
-    public void setType(CardType type) {
-        this.type = type;
-    }
-
     public CardRang getRang() {
         return rang;
-    }
-
-    public void setRang(CardRang rang) {
-        this.rang = rang;
     }
 
     public Rarety getRarety() {
         return rarety;
     }
 
-    public void setRarety(Rarety rarety) {
-        this.rarety = rarety;
-    }
-
     public Duration getDuration() {
         return duration;
-    }
-
-    public void setDuration(Duration duration) {
-        this.duration = duration;
     }
 
     public Duration getRecoveryTime() {
         return recoveryTime;
     }
 
+    public String getOriginImage() {
+        return originImage;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(CardType type) {
+        this.type = type;
+    }
+
+    public void setRang(CardRang rang) {
+        this.rang = rang;
+    }
+
+    public void setRarety(Rarety rarety) {
+        this.rarety = rarety;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
     public void setRecoveryTime(Duration recoveryTime) {
         this.recoveryTime = recoveryTime;
     }
+
+    public void setOriginImage(String originImage) {
+        this.originImage = originImage;
+    }
+
 }
