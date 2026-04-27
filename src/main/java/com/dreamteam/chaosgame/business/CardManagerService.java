@@ -93,7 +93,7 @@ public class CardManagerService {
      */
     public String uploadCardIcon(int cardId, MultipartFile file) throws IOException {
 
-        Card card = cardCrudService.get(cardId);
+        Card card = cardCrudService.get(String.valueOf(cardId));
         String uploadPath = "/home/slider/Downloads/ChaosGame/" + cardId;
 
         // Получаем информацию о файле
@@ -131,8 +131,6 @@ public class CardManagerService {
                                        @Nullable Rarety rarety,
                                        int pageNumber,
                                        int limit) {
-
         return cardCrudService.getCardsByParams(name, type, rang, rarety, pageNumber, limit);
     }
-
 }
