@@ -5,18 +5,11 @@ import com.dreamteam.chaosgame.api.mappers.CardMapper;
 import com.dreamteam.chaosgame.api.validators.CardCreateApiValidator;
 import com.dreamteam.chaosgame.business.CardManagerService;
 import com.dreamteam.chaosgame.db.Card;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 public class AdminCardsApiController {
@@ -48,11 +41,11 @@ public class AdminCardsApiController {
 
         cardCreateApiValidator.validate(cardDTO);
 
-        Card card = cardMapper.mapDtoToEntity(cardDTO);
+        Card card = cardMapper.toEntity(cardDTO);
 
         Card createdCard = cardManagerService.createCard(card);
 
-        return cardMapper.mapEntityToDTO(createdCard);
+        return cardMapper.toDto(createdCard);
     }
 
 
@@ -78,12 +71,12 @@ public class AdminCardsApiController {
 
         cardCreateApiValidator.validate(cardDTO);
 
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        Card cardFromUI = cardMapper.toEntity(cardDTO);
         cardFromUI.setId(cardId);
 
         Card createdCard = cardManagerService.updateCard(cardFromUI);
 
-        return cardMapper.mapEntityToDTO(createdCard);
+        return cardMapper.toDto(createdCard);
     }
 
 
@@ -95,7 +88,7 @@ public class AdminCardsApiController {
 
         Card removedCard = cardManagerService.removeCard(cardId);
 
-        return cardMapper.mapEntityToDTO(removedCard);
+        return cardMapper.toDto(removedCard);
     }
 
 

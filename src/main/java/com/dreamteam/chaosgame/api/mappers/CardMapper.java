@@ -2,33 +2,16 @@ package com.dreamteam.chaosgame.api.mappers;
 
 import com.dreamteam.chaosgame.api.dtos.CardDTO;
 import com.dreamteam.chaosgame.db.Card;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Service
-public class CardMapper {
+@Mapper(componentModel = "spring")
+public interface CardMapper {
 
-    public Card mapDtoToEntity(CardDTO cardDTO) {
-        return new Card(
-                cardDTO.getName(),
-                cardDTO.getType(),
-                cardDTO.getRang(),
-                cardDTO.getRarety(),
-                cardDTO.getDuration(),
-                cardDTO.getRecoveryTime(),
-                cardDTO.getOriginImage()
-        );
-    }
+    @Mapping(source = "description", target = "fullDescription")
+    CardDTO toDto(Card card);
 
-    public CardDTO mapEntityToDTO(Card card) {
-        return new CardDTO(
-                String.valueOf(card.getId()),
-                card.getName(),
-                card.getType(),
-                card.getRang(),
-                card.getRarety(),
-                card.getDuration(),
-                card.getRecoveryTime(),
-                card.getOriginImage()
-        );
-    }
+    @Mapping(source = "fullDescription", target = "description")
+    Card toEntity(CardDTO cardDto);
+
 }

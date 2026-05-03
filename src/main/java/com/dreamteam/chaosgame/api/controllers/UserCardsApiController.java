@@ -45,7 +45,7 @@ public class UserCardsApiController {
 
         // перемапать Card -> CardDTO
         List<CardDTO> dtoList = cardsByParams.stream()
-                .map(card -> cardMapper.mapEntityToDTO(card))
+                .map(card -> cardMapper.toDto(card))
                 .toList();
 
         boolean hasNext = offset + limit < totalCount;
