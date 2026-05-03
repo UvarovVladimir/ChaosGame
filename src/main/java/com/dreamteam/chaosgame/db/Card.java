@@ -34,7 +34,7 @@ public class Card {
     @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
-    @Column(name = "originImage", nullable = false)
+    @Column(name = "originImage")
     private String originImage;
 
     public Card() {

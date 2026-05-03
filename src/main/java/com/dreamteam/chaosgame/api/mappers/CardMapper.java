@@ -14,7 +14,8 @@ public class CardMapper {
                 cardDTO.getRang(),
                 cardDTO.getRarety(),
                 cardDTO.getDuration(),
-                cardDTO.getRecoveryTime()
+                cardDTO.getRecoveryTime(),
+                cardDTO.getOriginImage()
         );
     }
 
@@ -26,7 +27,8 @@ public class CardMapper {
                 card.getRang(),
                 card.getRarety(),
                 card.getDuration(),
-                card.getRecoveryTime()
+                card.getRecoveryTime(),
+                card.getOriginImage()
         );
     }
 }

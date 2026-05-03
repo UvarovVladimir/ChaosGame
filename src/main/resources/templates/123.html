@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Библиотека карт | DreamTeam Chaos Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #1a1e2c 0%, #0f121d 100%);
+            color: #eef2ff;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Заголовок */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, #f0c45a, #e67e22);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: #a0a8c0;
+            margin-top: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Сетка карточек */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 2.5rem;
+        }
+
+        /* Карточка */
+        .card {
+            background: rgba(25, 30, 45, 0.8);
+            backdrop-filter: blur(2px);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 120, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 200, 80, 0.5);
+        }
+
+        /* Блок изображения */
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background: #0b0e16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 1px solid rgba(255,215,120,0.3);
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.02);
+        }
+
+        .no-image {
+            font-size: 3rem;
+            opacity: 0.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: #7f8c9a;
+        }
+
+        .no-image span {
+            font-size: 0.8rem;
+        }
+
+        /* Информация о карте */
+        .card-info {
+            padding: 1.2rem 1.3rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #ffdd99;
+            word-break: break-word;
+            line-height: 1.2;
+        }
+
+        .card-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            background: #2a2f42;
+            padding: 0.25rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #cdd9ff;
+        }
+
+        .badge.rarety {
+            background: #6b2e6b;
+            color: #f5c2e5;
+        }
+
+        .badge.rang {
+            background: #b45f1b;
+            color: #ffe0a3;
+        }
+
+        .badge.type {
+            background: #2c5a6e;
+            color: #b9e6ff;
+        }
+
+        .stats {
+            margin: 0.8rem 0;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            background: rgba(0,0,0,0.25);
+            padding: 0.6rem 0.8rem;
+            border-radius: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            padding-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-weight: 500;
+            color: #b9c3e6;
+        }
+
+        .stat-value {
+            font-family: monospace;
+            font-weight: 600;
+            color: #f3d382;
+        }
+
+        .description-placeholder {
+            margin-top: 0.6rem;
+            font-size: 0.85rem;
+            background: #1e2337;
+            padding: 0.5rem 0.7rem;
+            border-radius: 12px;
+            color: #b9c3e6;
+            font-style: italic;
+        }
+
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: #2d334b;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #f0b85a;
+            color: #1e1e2a;
+            transform: scale(1.02);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            background: #00000055;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .loader {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #ffd966;
+        }
+
+        .error-message {
+            background: #a52222aa;
+            border-left: 5px solid #ff7b72;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📚 Библиотека заклинаний & карт</h1>
+        <p>Каждая карта — уникальное искусство и сила. Просматривайте коллекцию, загруженную в DreamTeam Chaos Game.</p>
+    </div>
+
+    <div id="cardsContainer" class="cards-grid">
+        <!-- Карточки будут динамически вставлены сюда -->
+        <div class="loader">✨ Загрузка карт из вселенной...</div>
+    </div>
+
+    <div class="pagination" id="paginationControls">
+        <button class="page-btn" id="prevBtn" disabled>◀ Назад</button>
+        <span class="page-info" id="pageIndicator">Страница 1</span>
+        <button class="page-btn" id="nextBtn">Вперед ▶</button>
+    </div>
+    <footer>Изображения карт загружаются через API /download — карточки без картинки получают заглушку.</footer>
+</div>
+
+<script>
+    // Конфигурация API (совпадает с коллекцией Postman)
+    const API_BASE = 'http://localhost:8080';
+    const CARDS_ENDPOINT = `${API_BASE}/cards`;
+    const DOWNLOAD_ENDPOINT = `${API_BASE}/download`;
+
+    // Параметры пагинации
+    const LIMIT = 9;          // карт на страницу (можно изменить)
+    let currentOffset = 0;
+    let currentCardsCount = 0;   // сколько карт пришло на текущей странице (чтобы понять, есть ли следующая)
+    let isLoading = false;
+
+    // DOM элементы
+    const cardsContainer = document.getElementById('cardsContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageIndicator = document.getElementById('pageIndicator');
+
+    // Вспомогательная функция: задержка (для снятия флага загрузки)
+    function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    // Функция загрузки карт с бекенда
+    async function fetchCards(offset, limit) {
+        isLoading = true;
+        showLoader(true);
+        try {
+            // Формируем URL с параметрами offset и limit
+            const url = new URL(CARDS_ENDPOINT);
+            url.searchParams.append('offset', offset);
+            url.searchParams.append('limit', limit);
+
+            // Дополнительно: если хотим фильтровать по типу (можно раскомментировать, но для каталога все типы)
+            // url.searchParams.append('type', ''); // пусто - все
+
+            const response = await fetch(url.toString(), {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            // Предполагаем, что API возвращает массив карт. Если это объект с оберткой - адаптируйте
+            // По коллекции Postman: GET /cards?offset=0&limit=2 возвращает массив объектов Card
+            let cards = [];
+            if (Array.isArray(data)) {
+                cards = data;
+            } else if (data.content && Array.isArray(data.content)) {
+                // поддержка Pageable формата Spring (если вдруг)
+                cards = data.content;
+            } else if (data.cards && Array.isArray(data.cards)) {
+                cards = data.cards;
+            } else {
+                console.warn('Неожиданный формат ответа:', data);
+                cards = [];
+            }
+
+            currentCardsCount = cards.length;
+            renderCards(cards);
+            updatePaginationButtons(offset, cards.length, limit);
+            return cards;
+        } catch (error) {
+            console.error('Ошибка загрузки карт:', error);
+            cardsContainer.innerHTML = `<div class="error-message">⚠️ Не удалось загрузить карты. Убедитесь, что сервер запущен на ${API_BASE} и CORS настроен. <br> Детали: ${error.message}</div>`;
+            currentCardsCount = 0;
+            updatePaginationButtons(offset, 0, limit);
+        } finally {
+            isLoading = false;
+            showLoader(false);
+        }
+    }
+
+    // Отображение индикатора загрузки
+    function showLoader(show) {
+        if (!show && cardsContainer.innerHTML.includes('loader')) {
+            // Если внутри только лоадер - чистим, но рендер сам перезапишет
+            return;
+        }
+        if (show) {
+            cardsContainer.innerHTML = '<div class="loader">🌀 Загрузка артефактов...</div>';
+        }
+    }
+
+    // Рендер карточек на основе данных
+    function renderCards(cards) {
+        if (!cards || cards.length === 0) {
+            cardsContainer.innerHTML = `<div class="error-message" style="background: #2a2f42;">📭 В библиотеке пока нет карт. Создайте первую через POST /cards или добавьте изображения.</div>`;
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        for (const card of cards) {
+            const cardElement = createCardElement(card);
+            fragment.appendChild(cardElement);
+        }
+
+        cardsContainer.innerHTML = '';
+        cardsContainer.appendChild(fragment);
+    }
+
+    // Создание HTML элемента карточки из объекта карты
+    function createCardElement(card) {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+
+        // ---- Изображение ----
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'card-image';
+
+        // Пытаемся найти имя файла изображения. Предполагаем, что в карте есть поля: imageName, imageUrl, picture, fileName.
+        // Адаптируем под возможные варианты. По умолчанию смотрим imageName, потом image, потом fileName.
+        let imageFilename = null;
+        if (card.imageName) imageFilename = card.imageName;
+        else if (card.image) imageFilename = card.image;
+        else if (card.fileName) imageFilename = card.fileName;
+        else if (card.picture) imageFilename = card.picture;
+        else if (card.imageUrl && card.imageUrl.includes('/download/')) {
+            // Если уже есть полный URL, вытащим имя
+            const match = card.imageUrl.match(/\/download\/([^?]+)/);
+            if (match) imageFilename = match[1];
+        }
+
+        if (imageFilename) {
+            const img = document.createElement('img');
+            img.src = `${DOWNLOAD_ENDPOINT}/${encodeURIComponent(imageFilename)}`;
+            img.alt = card.name || 'Card image';
+            img.loading = 'lazy';
+            img.onerror = () => {
+                // Если картинка не загрузилась (404 или ошибка), заменяем на плейсхолдер
+                img.onerror = null;
+                img.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'no-image';
+                fallback.innerHTML = '🖼️<br><span>нет изображения</span>';
+                imageContainer.innerHTML = '';
+                imageContainer.appendChild(fallback);
+            };
+            imageContainer.appendChild(img);
+        } else {
+            // Нет изображения — заглушка
+            const noImgDiv = document.createElement('div');
+            noImgDiv.className = 'no-image';
+            noImgDiv.innerHTML = '🎴<br><span>без арта</span>';
+            imageContainer.appendChild(noImgDiv);
+        }
+
+        // ---- Информационная часть ----
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'card-info';
+
+        // Название
+        const nameEl = document.createElement('div');
+        nameEl.className = 'card-name';
+        nameEl.textContent = card.name || 'Безымянная карта';
+        infoDiv.appendChild(nameEl);
+
+        // Бейджи: тип, ранг, редкость
+        const detailsRow = document.createElement('div');
+        detailsRow.className = 'card-details';
+
+        if (card.type) {
+            const typeBadge = document.createElement('span');
+            typeBadge.className = 'badge type';
+            typeBadge.textContent = `⚔️ ${card.type}`;
+            detailsRow.appendChild(typeBadge);
+        }
+        if (card.rang) {
+            const rangBadge = document.createElement('span');
+            rangBadge.className = 'badge rang';
+            rangBadge.textContent = `🏅 ${card.rang}`;
+            detailsRow.appendChild(rangBadge);
+        }
+        if (card.rarety) {
+            const raretyBadge = document.createElement('span');
+            raretyBadge.className = 'badge rarety';
+            raretyBadge.textContent = `✨ ${card.rarety}`;
+            detailsRow.appendChild(raretyBadge);
+        }
+        infoDiv.appendChild(detailsRow);
+
+        // Длительность / Восстановление
+        const statsDiv = document.createElement('div');
+        statsDiv.className = 'stats';
+
+        if (card.duration) {
+            const durationItem = document.createElement('div');
+            durationItem.className = 'stat-item';
+            durationItem.innerHTML = `<span class="stat-label">⏱ Длительность</span><span class="stat-value">${formatDuration(card.duration)}</span>`;
+            statsDiv.appendChild(durationItem);
+        }
+        if (card.recoveryTime) {
+            const recoveryItem = document.createElement('div');
+            recoveryItem.className = 'stat-item';
+            recoveryItem.innerHTML = `<span class="stat-label">🔄 Восстановление</span><span class="stat-value">${formatDuration(card.recoveryTime)}</span>`;
+            statsDiv.appendChild(recoveryItem);
+        }
+
+        // Если есть дополнительные поля как описание, выведем их (description / effect)
+        let descriptionText = card.description || card.effect || null;
+        if (!descriptionText && card.name) {
+            // Если нет явного описания, сгенерируем из характеристик
+            descriptionText = `${card.name} — карта типа ${card.type || 'unknown'}. ${card.rarety ? 'Редкость: ' + card.rarety + '.' : ''}`;
+        }
+
+        if (statsDiv.children.length > 0) infoDiv.appendChild(statsDiv);
+
+        // Блок описания (если есть)
+        if (descriptionText) {
+            const descDiv = document.createElement('div');
+            descDiv.className = 'description-placeholder';
+            descDiv.innerHTML = `📖 ${escapeHtml(descriptionText.substring(0, 120))}${descriptionText.length > 120 ? '…' : ''}`;
+            infoDiv.appendChild(descDiv);
+        } else {
+            // Добавим стандартное описание
+            const defaultDesc = document.createElement('div');
+            defaultDesc.className = 'description-placeholder';
+            defaultDesc.textContent = '❓ Описание отсутствует, но карта готова к битве.';
+            infoDiv.appendChild(defaultDesc);
+        }
+
+        cardDiv.appendChild(imageContainer);
+        cardDiv.appendChild(infoDiv);
+
+        return cardDiv;
+    }
+
+    // Форматирование ISO 8601 длительности (P2DT3H4M) в читаемый вид
+    function formatDuration(durationStr) {
+        if (!durationStr) return '—';
+        try {
+            // Простейшее преобразование: вытаскиваем дни, часы, минуты
+            let days = 0, hours = 0, minutes = 0;
+            const daysMatch = durationStr.match(/(\d+)D/);
+            const hoursMatch = durationStr.match(/(\d+)H/);
+            const minutesMatch = durationStr.match(/(\d+)M/);
+            if (daysMatch) days = parseInt(daysMatch[1]);
+            if (hoursMatch) hours = parseInt(hoursMatch[1]);
+            if (minutesMatch) minutes = parseInt(minutesMatch[1]);
+            let result = '';
+            if (days > 0) result += `${days}д `;
+            if (hours > 0) result += `${hours}ч `;
+            if (minutes > 0) result += `${minutes}м`;
+            if (result === '') return durationStr;
+            return result.trim();
+        } catch(e) {
+            return durationStr;
+        }
+    }
+
+    // Простейший escape для предотвращения XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Обновление состояния кнопок пагинации и индикатора
+    function updatePaginationButtons(offset, receivedCount, limit) {
+        const currentPage = Math.floor(offset / limit) + 1;
+        pageIndicator.textContent = `Страница ${currentPage}`;
+
+        // Кнопка "Назад" активна если offset > 0
+        prevBtn.disabled = (offset === 0);
+
+        // Кнопка "Вперед": активна если пришло ровно limit карт (есть шанс что следующая страница не пуста)
+        // Если получено меньше, чем limit - значит это последняя страница
+        nextBtn.disabled = (receivedCount < limit);
+
+        // Дополнительно можно сделать кнопку "Вперед" активной если ответ содержит полный лимит, иначе деактивируем
+        // (стандартный подход)
+    }
+
+    // Обработчики пагинации
+    function goPrevPage() {
+        if (isLoading) return;
+        const newOffset = Math.max(0, currentOffset - LIMIT);
+        if (newOffset !== currentOffset) {
+            currentOffset = newOffset;
+            fetchCards(currentOffset, LIMIT);
+        }
+    }
+
+    function goNextPage() {
+        if (isLoading) return;
+        // Переход на следующую страницу, только если текущая страница содержит полный лимит (иначе нет данных)
+        if (currentCardsCount === LIMIT) {
+            currentOffset += LIMIT;
+            fetchCards(currentOffset, LIMIT);
+        }
+    }
+
+    // Инициализация и подписка на события
+    function init() {
+        fetchCards(currentOffset, LIMIT);
+        prevBtn.addEventListener('click', goPrevPage);
+        nextBtn.addEventListener('click', goNextPage);
+    }
+
+    // Запуск
+    init();
+</script>
+</body>
+</html>
