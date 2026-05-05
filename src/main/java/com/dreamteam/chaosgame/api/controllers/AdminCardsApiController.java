@@ -32,20 +32,17 @@ public class AdminCardsApiController {
     public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
         // TODO: возможно, использовать type для фильтрации, пока игнорируем
         Card card = cardManagerService.getCard(cardId);
-        return cardMapper.mapEntityToDTO(card);
+        return cardMapper.toDto(card);
     }
 
     @PostMapping("/cards")
     public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
         cardCreateApiValidator.validate(cardDTO);
-        Card card = cardMapper.mapDtoToEntity(cardDTO);
-
         Card card = cardMapper.toEntity(cardDTO);
 
         Card createdCard = cardManagerService.createCard(card);
-        return cardMapper.mapEntityToDTO(createdCard);
-
         return cardMapper.toDto(createdCard);
+
     }
 
     /**
@@ -54,10 +51,10 @@ public class AdminCardsApiController {
     @PatchMapping("/cards/{cardId}")
     public CardDTO updateCardFields(@PathVariable("cardId") String cardId, @RequestBody CardDTO cardDTO) {
         cardCreateApiValidator.validate(cardDTO);
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        Card cardFromUI = cardMapper.toEntity(cardDTO);
         cardFromUI.setId(Integer.valueOf(cardId));
         Card updatedCard = cardManagerService.updateCardFields(cardFromUI);
-        return cardMapper.mapEntityToDTO(updatedCard);
+        return cardMapper.toDto(updatedCard);
     }
 
     /**
@@ -68,10 +65,10 @@ public class AdminCardsApiController {
                               @RequestBody CardDTO cardDTO) {
 
         cardCreateApiValidator.validate(cardDTO);
-        Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
+        Card cardFromUI = cardMapper.toEntity(cardDTO);
         cardFromUI.setId(cardId);
         Card updatedCard = cardManagerService.updateCard(cardFromUI);
-        return cardMapper.mapEntityToDTO(updatedCard);
+        return cardMapper.toDto(updatedCard);
     }
 
     /**
@@ -80,7 +77,7 @@ public class AdminCardsApiController {
     @DeleteMapping("/cards/{cardId}")
     public CardDTO deleteCards(@PathVariable("cardId") String cardId) {
         Card removedCard = cardManagerService.removeCard(cardId);
-        return cardMapper.mapEntityToDTO(removedCard);
+        return cardMapper.toDto(removedCard);
     }
 
 
