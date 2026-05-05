@@ -5,18 +5,11 @@ import com.dreamteam.chaosgame.api.mappers.CardMapper;
 import com.dreamteam.chaosgame.api.validators.CardCreateApiValidator;
 import com.dreamteam.chaosgame.business.CardManagerService;
 import com.dreamteam.chaosgame.db.Card;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 @RestController
@@ -46,8 +39,13 @@ public class AdminCardsApiController {
     public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
         cardCreateApiValidator.validate(cardDTO);
         Card card = cardMapper.mapDtoToEntity(cardDTO);
+
+        Card card = cardMapper.toEntity(cardDTO);
+
         Card createdCard = cardManagerService.createCard(card);
         return cardMapper.mapEntityToDTO(createdCard);
+
+        return cardMapper.toDto(createdCard);
     }
 
     /**
@@ -66,7 +64,9 @@ public class AdminCardsApiController {
      * Полная замена карты.
      */
     @PutMapping("/cards/{cardId}")
-    public CardDTO updateCard(@PathVariable("cardId") int cardId, @RequestBody CardDTO cardDTO) {
+    public CardDTO updateCard(@PathVariable("cardId") int cardId,
+                              @RequestBody CardDTO cardDTO) {
+
         cardCreateApiValidator.validate(cardDTO);
         Card cardFromUI = cardMapper.mapDtoToEntity(cardDTO);
         cardFromUI.setId(cardId);
@@ -84,7 +84,7 @@ public class AdminCardsApiController {
     }
 
 
-    @PostMapping("/upload")
+    @PostMapping("cards/{cardId}/upload/picture/")
     public ResponseEntity<String> uploadFile(
             @RequestParam("cardId") int cardId,
             @RequestParam("file") MultipartFile file,
@@ -105,31 +105,31 @@ public class AdminCardsApiController {
     }
 
 
-    @GetMapping("/download/{filename}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get("/home/slider/Downloads/ChaosGame/").resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (!resource.exists()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            // Определяем Content-Type
-            String contentType = Files.probeContentType(filePath);
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
-
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+//    @GetMapping("/download/{filename}")
+//    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
+//        try {
+//            Path filePath = Paths.get("/home/slider/Downloads/ChaosGame/").resolve(filename).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            if (!resource.exists()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//
+//            // Определяем Content-Type
+//            String contentType = Files.probeContentType(filePath);
+//            if (contentType == null) {
+//                contentType = "application/octet-stream";
+//            }
+//
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION,
+//                            "attachment; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//
+//        } catch (IOException e) {
+//            return ResponseEntity.internalServerError().build();
+//        }
+//    }
 
 }

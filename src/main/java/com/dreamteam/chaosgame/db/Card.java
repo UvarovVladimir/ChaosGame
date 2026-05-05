@@ -19,6 +19,9 @@ public class Card {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description", nullable = true)
+    private String description;
+
     @Column(name = "type", nullable = false)
     private CardType type;
 
@@ -34,26 +37,10 @@ public class Card {
     @Column(name = "recoveryTime", nullable = false)
     private Duration recoveryTime;
 
-    @Column(name = "originImage", nullable = false)
+    @Column(name = "originImage")
     private String originImage;
 
     public Card() {
-    }
-
-    public Card(String name,
-                CardType type,
-                CardRang rang,
-                Rarety rarety,
-                Duration duration,
-                Duration recoveryTime,
-                String originImage) {
-        this.name = name;
-        this.type = type;
-        this.rang = rang;
-        this.rarety = rarety;
-        this.duration = duration;
-        this.recoveryTime = recoveryTime;
-        this.originImage = originImage;
     }
 
     public int getId() {
@@ -118,6 +105,15 @@ public class Card {
 
     public void setOriginImage(String originImage) {
         this.originImage = originImage;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
