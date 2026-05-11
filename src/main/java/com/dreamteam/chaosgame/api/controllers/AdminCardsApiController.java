@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+
 @RestController
 public class AdminCardsApiController {
 
@@ -28,39 +29,33 @@ public class AdminCardsApiController {
     }
 
     @GetMapping("/cards/{cardId}")
-    public CardDTO getCard(@PathVariable("infoId") String infoId,
-                           @RequestParam(name = "type", required = false) String type) {
-
-        // TODO !!!!
-        return new CardDTO();
+    public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
+        // TODO: возможно, использовать type для фильтрации, пока игнорируем
+        Card card = cardManagerService.getCard(cardId);
+        return cardMapper.toDto(card);
     }
-
 
     @PostMapping("/cards")
     public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
-
         cardCreateApiValidator.validate(cardDTO);
-
         Card card = cardMapper.toEntity(cardDTO);
 
         Card createdCard = cardManagerService.createCard(card);
-
         return cardMapper.toDto(createdCard);
-    }
 
+    }
 
     /**
      * Частичное обновление полей.
      */
     @PatchMapping("/cards/{cardId}")
-    public CardDTO updateCardFields(@PathVariable("infoId") String infoId,
-                                    @RequestParam(name = "type", required = false) String type) {
-
-
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/7
-        return new CardDTO();
+    public CardDTO updateCardFields(@PathVariable("cardId") String cardId, @RequestBody CardDTO cardDTO) {
+        cardCreateApiValidator.validate(cardDTO);
+        Card cardFromUI = cardMapper.toEntity(cardDTO);
+        cardFromUI.setId(Integer.valueOf(cardId));
+        Card updatedCard = cardManagerService.updateCardFields(cardFromUI);
+        return cardMapper.toDto(updatedCard);
     }
-
 
     /**
      * Полная замена карты.
@@ -70,24 +65,18 @@ public class AdminCardsApiController {
                               @RequestBody CardDTO cardDTO) {
 
         cardCreateApiValidator.validate(cardDTO);
-
         Card cardFromUI = cardMapper.toEntity(cardDTO);
         cardFromUI.setId(cardId);
-
-        Card createdCard = cardManagerService.updateCard(cardFromUI);
-
-        return cardMapper.toDto(createdCard);
+        Card updatedCard = cardManagerService.updateCard(cardFromUI);
+        return cardMapper.toDto(updatedCard);
     }
-
 
     /**
      * Удаление карты.
      */
     @DeleteMapping("/cards/{cardId}")
     public CardDTO deleteCards(@PathVariable("cardId") String cardId) {
-
         Card removedCard = cardManagerService.removeCard(cardId);
-
         return cardMapper.toDto(removedCard);
     }
 

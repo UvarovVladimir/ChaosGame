@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Сервис отвечающий за СRUD-операции с сущностью {@link  Card}.
  */
@@ -23,10 +25,11 @@ public class CardCrudService {
         this.cardRepository = cardRepository;
     }
 
-    public Card get(int cardId) {
 
-        // TODO !!!!
-        return new Card();
+    public Card get(String cardId) {
+        int id = Integer.parseInt(cardId);
+        Optional<Card> optional = cardRepository.findById((long) id);
+        return optional.orElse(null);
     }
 
     public Page<Card> getCardsByParams(String name,
@@ -60,22 +63,33 @@ public class CardCrudService {
     }
 
     public Card update(Card card) {
-
+        // Проверяем существование
+        Optional<Card> existing = cardRepository.findById((long) card.getId());
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Card not found with id: " + card.getId());
+        }
         return cardRepository.save(card);
     }
 
     public Card updateFields(Card card) {
 
-        // TODO !!!!
-
+        // Проверяем существование
+        Optional<Card> existing = cardRepository.findById((long) card.getId());
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Card not found with id: " + card.getId());
+        }
         return cardRepository.save(card);
     }
 
 
     public Card remove(int cardId) {
-
-        // TODO !!!!
-        return new Card();
+        Optional<Card> optional = cardRepository.findById((long) cardId);
+        if (optional.isPresent()) {
+            Card card = optional.get();
+            cardRepository.deleteById((long) cardId);
+            return card;
+        } else {
+            throw new RuntimeException("Card not found with id: " + cardId);
+        }
     }
-
 }

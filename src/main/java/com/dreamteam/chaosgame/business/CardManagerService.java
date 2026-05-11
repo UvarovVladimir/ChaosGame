@@ -25,7 +25,6 @@ public class CardManagerService {
     @Autowired
     public CardManagerService(CardValidationService cardValidationService,
                               CardCrudService cardCrudService) {
-
         this.cardValidationService = cardValidationService;
         this.cardCrudService = cardCrudService;
     }
@@ -35,7 +34,6 @@ public class CardManagerService {
      * Сохранение карты в БД.
      */
     public Card createCard(Card card) {
-
         cardValidationService.validateNewCard(card);
 
         // TODO * Сохранить картинку карты на диск
@@ -44,20 +42,24 @@ public class CardManagerService {
     }
 
     public Card updateCard(Card card) {
-
-        // TODO сделать валидацию карты https://github.com/UvarovVladimir/ChaosGame/issues/8 ??? или в отд задаче
-
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return card;
-
+        // Проверяем, что карта существует
+        Card existing = cardCrudService.get(String.valueOf(card.getId()));
+        if (existing == null) {
+            throw new RuntimeException("Card with id " + card.getId() + " not found");
+        }
+        // Можно добавить бизнес-валидацию для обновления
+        return cardCrudService.update(card);
     }
 
     public Card updateCardFields(Card card) {
-        // TODO сделать валидацию карты
-
-        // достать карту по ID
         int cardId = card.getId();
-        Card cardFromDb = cardCrudService.get(cardId);
+        Card cardFromDb = cardCrudService.get(String.valueOf(cardId));
+        if (cardFromDb == null) {
+            throw new RuntimeException("Card with id " + cardId + " not found");
+        }
+        // достать карту по ID
+        //
+        // Card cardFromDb = cardCrudService.get(cardId);
 
 
         // Обновить все поля пришедшие из UI в объекте из БД
@@ -83,8 +85,7 @@ public class CardManagerService {
 
         // Вызвать обновление
 
-        return cardCrudService.update(cardFromDb);
-
+        return cardCrudService.updateFields(cardFromDb);
     }
 
     /**
@@ -92,7 +93,7 @@ public class CardManagerService {
      */
     public String uploadCardIcon(int cardId, MultipartFile file) throws IOException {
 
-        Card card = cardCrudService.get(cardId);
+        Card card = cardCrudService.get(String.valueOf(cardId));
         String uploadPath = "/home/slider/Downloads/ChaosGame/" + cardId;
 
         // Получаем информацию о файле
@@ -113,14 +114,15 @@ public class CardManagerService {
     }
 
     public Card removeCard(String cardId) {
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return new Card();
-
+        return cardCrudService.remove(Integer.parseInt(cardId));
     }
 
     public Card getCard(String cardId) {
-        // TODO https://github.com/UvarovVladimir/ChaosGame/issues/8
-        return new Card();
+        Card card = cardCrudService.get(cardId);
+        if (card == null) {
+            throw new RuntimeException("Card with id " + cardId + " not found");
+        }
+        return card;
     }
 
     public Page<Card> getCardsByParams(@Nullable String name,
@@ -129,8 +131,6 @@ public class CardManagerService {
                                        @Nullable Rarety rarety,
                                        int pageNumber,
                                        int limit) {
-
         return cardCrudService.getCardsByParams(name, type, rang, rarety, pageNumber, limit);
     }
-
 }

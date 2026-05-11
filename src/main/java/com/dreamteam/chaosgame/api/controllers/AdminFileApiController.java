@@ -53,7 +53,8 @@ public class AdminFileApiController {
 
             // Здесь логика сохранения файла
             // Например, сохранение на диск:
-            String uploadPath = "/home/slider/Downloads/ChaosGame/" + originalFilename;
+            //String uploadPath = "/home/slider/Downloads/ChaosGame/" + originalFilename;
+            String uploadPath = "c:\\Projects\\ChaosGame\\src\\main\\resources\\" + originalFilename;
             file.transferTo(new java.io.File(uploadPath));
 
             return ResponseEntity.ok("Файл успешно загружен: " + originalFilename);
