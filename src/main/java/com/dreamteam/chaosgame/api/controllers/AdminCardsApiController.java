@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 
+/**
+ * !!!!!!!ААА Класс для .
+ */
 @RestController
 public class AdminCardsApiController {
 
@@ -31,7 +34,7 @@ public class AdminCardsApiController {
     @GetMapping("/cards/{cardId}")
     public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
         // TODO: возможно, использовать type для фильтрации, пока игнорируем
-        Card card = cardManagerService.getCard(cardId);
+        Card card = cardManagerService.getCardById(cardId);
         return cardMapper.toDto(card);
     }
 
