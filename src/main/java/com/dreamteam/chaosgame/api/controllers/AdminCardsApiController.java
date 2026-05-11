@@ -84,6 +84,9 @@ public class AdminCardsApiController {
     }
 
 
+    /**
+     * Обновление карты.
+     */
     @PostMapping("cards/{cardId}/upload/picture/")
     public ResponseEntity<String> uploadFile(
             @RequestParam("cardId") int cardId,
