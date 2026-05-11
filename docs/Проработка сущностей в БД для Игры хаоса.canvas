@@ -1,0 +1,30 @@
+{
+	"nodes":[
+		{"id":"cae1f74c64e1d305","type":"text","text":"**Рассы**\n\nid\ntype\nhp\nendurence\nspeed\n\n\n","x":-640,"y":-920,"width":250,"height":660},
+		{"id":"84f77683f78a74e0","x":-1140,"y":-1300,"width":420,"height":1013,"type":"text","text":"коллекция карт\n\nКоллекция щитов\n\nКоллекция доспехов\n\nКоллекция заклинаний (атакующие, целебные, призыв, бафы) - все отдельные коллекции\n\nКоллекция Игроков\n\nКоллекция Книг\n\nКоллекция Сумок (может быть несколько)\n\nКоллекция Активаторов\n\nКоллекция Компасов\n\nКоллекция первое оружие\n\nКоллекция предметов, Они тоже делятся на доспехи, оружие, ресурсы, зелья …"},
+		{"id":"0a1bfc722698955c","type":"text","text":"**Влияение на персонажа**\n\nid\nperson_id\ntype_buff_debuff\nparameter  : endurence_max\nvalue_type  (% или count)\nvalue: +-4\n\n\n\n\n\n\n","x":120,"y":-920,"width":350,"height":660},
+		{"id":"cc1b91a240368cbd","type":"text","text":"**Персонаж**\n\nid\nname\nflameColor: \ncartStrong: 120\nraceId\nhp_max\nhp_current\nendurence_max\nendurence_current\nspeed_max\nspeed_current\n\nresitences:{\n\tdeath:\n\tsound:\n  flame: 75\n  water:\n  air:\n  earth:\n  dark:\n  light:\n}\n\n","x":-290,"y":-920,"width":250,"height":660},
+		{"id":"25a2cae6b42e2e3e","type":"text","text":"**Достижения персонажей**\n\nid\nperson_id\ndostigenie_influenceIds\nname:  Кольца смеющего господина за спасение мира\nitem:  ссылка на благословения\n\n\n\n\n\n","x":212,"y":-1409,"width":360,"height":258},
+		{"id":"de12ed03fbe532ae","type":"text","text":"Божественные проклятия или Бафы\n\n\n","x":-193,"y":-1409,"width":307,"height":258},
+		{"id":"d99fb60706f1f120","type":"text","text":"Сферы силы вложенные\n\n\n","x":-571,"y":-1409,"width":307,"height":258},
+		{"id":"3703a4e9d0edf2b1","type":"text","text":"карты персонажа\n\nid\npersonId\ncardId:\nулучшения карты: {\n\n}\n\n","x":-620,"y":-120,"width":250,"height":440},
+		{"id":"e625921bdc1989ac","type":"text","text":"Наложенные заклинания на персонажа\n\nid\ncardId:\npesonId\nистощения процен\nвремя начала действия\nвремя окончания действия\n\n","x":-290,"y":-120,"width":250,"height":440},
+		{"id":"cf9464f3213198a3","type":"text","text":"Сначалал все принимает щит\nпотом доспех\n","x":460,"y":30,"width":250,"height":140},
+		{"id":"af3682b96e4ce153","type":"text","text":"Атакующие заклинания\n\n```\nid\ncardId\ndamage: единоразово 20%\ndurationDamage: 20% (за раунд раунд 3с поумолчанию)\ndamageAreа: radius 5 steps\ngradient : 10% это ослабление на каждые 10% от центра\ndamageType: {\n\t  phisical: 10%\n\t  flame: 10%\n\t  water: 10%\n\t  air: 10%\n\t  earth: 10%\n\t  dark: 10%\n\t  light: 10%\n}\nduration: 5\n```","x":330,"y":440,"width":520,"height":500},
+		{"id":"a02c1abc7525dec4","type":"text","text":"**Карты**\n\nid (Автоинкремент, первичный ключ)\nname ()\ntype ()\nperiod: 30 days\nrang: GOLD\nrarety: редкая\n\n\n\n","x":-640,"y":440,"width":400,"height":320},
+		{"id":"0b9dfa0383993851","type":"text","text":"Щиты\n\nid\ncardId\nresitences:{\n  phisical: middle\n  flame: low\n  water: middle\n  air: high\n  earth: high\n  dark: high\n  light: high\n}\nduration: 8 h","x":-160,"y":440,"width":400,"height":380},
+		{"id":"08d3c07fa0a284f8","type":"text","text":"Доспехи\n\nid\ncardId\nresitences:{\n  phisical: minimal, low, middle, good, excelent ( 1-5)\n  flame: \n  water: \n  air: \n  earth: \n  dark: \n  light: \n}\nduration: 8 h","x":-160,"y":860,"width":400,"height":420},
+		{"id":"d1fd5bda6801ae33","type":"text","text":"Усилители защиты\n\nid\ncardId\nщит: 20 %\nдоспех 20%\nduration: 8 h","x":-160,"y":1320,"width":400,"height":280},
+		{"id":"32abf91fe420534b","type":"text","text":"Бафы\n\n```\nid\ncardId\nbuffs:[\n\t{\n\t\ttype_buff_debuff\n\t\tparameter  : endurence_max\n\t\tvalue_type  (% или count)\n\t\tvalue: +-4\n\t\tduration: 5\n\t}\n]\n```","x":960,"y":440,"width":520,"height":500}
+	],
+	"edges":[
+		{"id":"cf1eeff5b1d8f6f9","fromNode":"cc1b91a240368cbd","fromSide":"right","toNode":"25a2cae6b42e2e3e","toSide":"left"},
+		{"id":"32db4b54a32e3ada","fromNode":"25a2cae6b42e2e3e","fromSide":"bottom","toNode":"0a1bfc722698955c","toSide":"top"},
+		{"id":"f4603b967bed5996","fromNode":"cc1b91a240368cbd","fromSide":"right","toNode":"0a1bfc722698955c","toSide":"left"},
+		{"id":"6087328156052e80","fromNode":"d99fb60706f1f120","fromSide":"bottom","toNode":"0a1bfc722698955c","toSide":"top"},
+		{"id":"a89cd7278d4327e5","fromNode":"de12ed03fbe532ae","fromSide":"bottom","toNode":"0a1bfc722698955c","toSide":"top"},
+		{"id":"716622db1a5c36bc","fromNode":"32abf91fe420534b","fromSide":"top","toNode":"0a1bfc722698955c","toSide":"top"},
+		{"id":"3c0f459dd6471ca9","fromNode":"cc1b91a240368cbd","fromSide":"bottom","toNode":"3703a4e9d0edf2b1","toSide":"top"},
+		{"id":"b39798dfd87eaa0a","fromNode":"cc1b91a240368cbd","fromSide":"bottom","toNode":"e625921bdc1989ac","toSide":"top"}
+	]
+}
