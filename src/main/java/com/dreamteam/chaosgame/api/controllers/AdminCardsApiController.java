@@ -34,7 +34,7 @@ public class AdminCardsApiController {
     @GetMapping("/cards/{cardId}")
     public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
         // TODO: возможно, использовать type для фильтрации, пока игнорируем
-        Card card = cardManagerService.getCardByGetRequest(cardId);
+        Card card = cardManagerService.getCard(cardId);
         return cardMapper.toDto(card);
     }
 
