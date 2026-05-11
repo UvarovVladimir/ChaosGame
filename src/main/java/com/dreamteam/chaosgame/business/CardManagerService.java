@@ -117,7 +117,7 @@ public class CardManagerService {
         return cardCrudService.remove(Integer.parseInt(cardId));
     }
 
-    public Card getCardById(String cardId) {
+    public Card getCard(String cardId) {
         Card card = cardCrudService.get(cardId);
         if (card == null) {
             throw new RuntimeException("Card with id " + cardId + " not found");

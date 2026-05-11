@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 /**
- * !!!!!!!ААА Класс для .
+ * Класс для АПИ карт для админа.
  */
 @RestController
 public class AdminCardsApiController {
@@ -34,7 +34,7 @@ public class AdminCardsApiController {
     @GetMapping("/cards/{cardId}")
     public CardDTO getCard(@PathVariable("cardId") String cardId, @RequestParam(name = "type", required = false) String type) {
         // TODO: возможно, использовать type для фильтрации, пока игнорируем
-        Card card = cardManagerService.getCardById(cardId);
+        Card card = cardManagerService.getCard(cardId);
         return cardMapper.toDto(card);
     }
 
@@ -84,6 +84,9 @@ public class AdminCardsApiController {
     }
 
 
+    /**
+     * Обновление карты.
+     */
     @PostMapping("cards/{cardId}/upload/picture/")
     public ResponseEntity<String> uploadFile(
             @RequestParam("cardId") int cardId,
