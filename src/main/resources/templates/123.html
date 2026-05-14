@@ -3,1168 +3,841 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DreamTeam Chaos Game — Библиотека заклинаний</title>
-    <!-- Font Awesome 6 для иконок -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>ChaosGame — каталог карт</title>
     <style>
-        /* ========== СБРОС И БАЗОВЫЕ СТИЛИ ========== */
-        :root {
-            --bg-primary: #0f0f1a;
-            --bg-secondary: #1a1a2e;
-            --bg-tertiary: #16213e;
-            --bg-card: #1e1e32;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0b0;
-            --accent: #6c5ce7;
-            --accent-hover: #7d6ff0;
-            --accent-glow: rgba(108, 92, 231, 0.4);
-            --gold: #ffd700;
-            --red: #e74c3c;
-            --green: #2ecc71;
-            --border: #2a2a4a;
-            --radius: 12px;
-            --radius-sm: 8px;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            --transition: 0.25s ease;
-        }
-
+        /* ---------- сброс / базовые настройки ---------- */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #222;
             min-height: 100vh;
-            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* ========== ШАПКА ========== */
-        .app-header {
+        /* ---------- цвета DNS ---------- */
+        :root {
+            --dns-orange: #ff6b00;
+            --dns-orange-hover: #e55d00;
+            --dns-dark: #1a1a1a;
+            --dns-gray: #f0f0f0;
+            --dns-border: #ddd;
+            --dns-green: #4caf50;
+            --dns-red: #e53935;
+        }
+
+        /* ---------- шапка ---------- */
+        .header {
+            background: #fff;
+            border-bottom: 3px solid var(--dns-orange);
+            padding: 12px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.9rem 2rem;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
-        .logo {
-            font-size: 1.3rem;
+        .header .logo {
+            font-size: 1.8rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            color: var(--dns-dark);
         }
 
-        .main-nav {
+        .header .logo span {
+            color: var(--dns-orange);
+        }
+
+        .header .nav-links {
             display: flex;
-            gap: 0.5rem;
+            gap: 24px;
+            font-size: 0.95rem;
         }
 
-        .nav-btn {
-            padding: 0.55rem 1.3rem;
-            border: 1px solid transparent;
-            border-radius: 2rem;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
+        .header .nav-links a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .header .nav-links a:hover,
+        .header .nav-links a.active {
+            color: var(--dns-orange);
+        }
+
+        /* ---------- основной контейнер ---------- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px 32px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* ---------- фильтры ---------- */
+        .filters {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid var(--dns-border);
+            border-radius: 6px;
             font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
+            min-width: 160px;
+            transition: border-color 0.2s;
         }
 
-        .nav-btn.active {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-            box-shadow: 0 0 14px var(--accent-glow);
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--dns-orange);
+            box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.15);
         }
 
-        .nav-btn:hover:not(.active) {
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        .btn-login {
-            padding: 0.5rem 1.2rem;
-            border: 1px solid var(--gold);
-            border-radius: 2rem;
-            background: transparent;
-            color: var(--gold);
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .btn-login:hover {
-            background: var(--gold);
-            color: #000;
-        }
-
-        /* ========== КНОПКИ ========== */
         .btn {
-            padding: 0.6rem 1.4rem;
+            padding: 10px 24px;
             border: none;
-            border-radius: 2rem;
+            border-radius: 6px;
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: var(--transition);
+            transition: background 0.2s, transform 0.1s;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 6px;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
         }
 
         .btn-primary {
-            background: var(--accent);
+            background: var(--dns-orange);
             color: #fff;
         }
 
         .btn-primary:hover {
-            background: var(--accent-hover);
-            box-shadow: 0 0 18px var(--accent-glow);
-            transform: translateY(-1px);
+            background: var(--dns-orange-hover);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            border: 1px solid var(--dns-border);
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: var(--dns-gray);
         }
 
         .btn-danger {
-            background: transparent;
-            border: 1px solid var(--red);
-            color: var(--red);
+            background: var(--dns-red);
+            color: #fff;
         }
 
         .btn-danger:hover {
-            background: var(--red);
+            background: #c62828;
+        }
+
+        .btn-success {
+            background: var(--dns-green);
             color: #fff;
         }
 
-        .btn-sm {
-            padding: 0.35rem 0.9rem;
-            font-size: 0.8rem;
+        .btn-success:hover {
+            background: #388e3c;
         }
 
-        .btn-icon {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-icon:hover {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        /* ========== КОНТЕНТ ========== */
-        .app-content {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 1.8rem 2rem;
-        }
-
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ========== ГАЛЕРЕЯ ========== */
-        .search-bar {
-            position: relative;
-            margin-bottom: 2rem;
-            max-width: 500px;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 0.8rem 1rem 0.8rem 2.8rem;
-            border: 1px solid var(--border);
-            border-radius: 2rem;
-            background: var(--bg-secondary);
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .search-bar input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
-        }
-
-        .search-bar i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
+        /* ---------- карточки ---------- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 1.6rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
 
         .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            border: 1px solid var(--border);
-            transition: var(--transition);
+            transition: box-shadow 0.25s, transform 0.2s;
             display: flex;
             flex-direction: column;
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px rgba(108, 92, 231, 0.3);
-            border-color: var(--accent);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.13);
+            transform: translateY(-3px);
         }
 
-        .card-image {
-            position: relative;
+        .card .card-img {
             width: 100%;
-            height: 200px;
-            background: var(--bg-tertiary);
-            overflow: hidden;
-        }
-
-        .card-image img {
-            width: 100%;
-            height: 100%;
+            height: 180px;
             object-fit: cover;
-        }
-
-        .card-image .placeholder-img {
+            background: #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            font-size: 3rem;
-            color: var(--text-secondary);
-            background: linear-gradient(135deg, #1a1a3e, #16213e);
+            font-size: 2.5rem;
+            color: #aaa;
         }
 
-        .card-mana {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: var(--gold);
-            padding: 0.25rem 0.7rem;
-            border-radius: 2rem;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .card-body {
-            padding: 1.1rem;
+        .card .card-body {
+            padding: 16px;
             flex: 1;
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
-        .card-body h3 {
+        .card .card-title {
             font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            font-weight: 600;
+            font-weight: 700;
+            color: #111;
         }
 
-        .card-type {
+        .card .card-meta {
             font-size: 0.8rem;
-            color: var(--accent);
-            margin-bottom: 0.6rem;
-        }
-
-        .card-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.8rem;
-            flex: 1;
-        }
-
-        .card-stats {
+            color: #777;
             display: flex;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .card-stats span {
+        .card .card-meta span {
+            background: var(--dns-gray);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .card .card-actions {
+            margin-top: auto;
             display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .card-footer {
-            padding: 0.7rem 1.1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .rarity-badge {
-            padding: 0.2rem 0.7rem;
-            border-radius: 2rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .rarity-common { background: #555; color: #ccc; }
-        .rarity-rare { background: #2e86de; color: #fff; }
-        .rarity-epic { background: #8e44ad; color: #fff; }
-        .rarity-legendary { background: var(--gold); color: #000; }
-
-        /* ========== ПАГИНАЦИЯ ========== */
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2.5rem;
-            padding: 1rem 0;
-        }
-
-        .pagination button {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--bg-secondary);
-            color: #fff;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1rem;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .pagination button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .pagination span {
-            font-weight: 500;
-        }
-
-        /* ========== АДМИН-ПАНЕЛЬ ========== */
-        .admin-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            gap: 1rem;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
-        .admin-toolbar input {
-            padding: 0.55rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 2rem;
-            background: var(--bg-secondary);
-            color: #fff;
-            outline: none;
-            width: 250px;
-        }
-
-        .admin-table-wrapper {
-            overflow-x: auto;
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-        }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        .admin-table th,
-        .admin-table td {
-            padding: 0.8rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .admin-table th {
-            background: var(--bg-tertiary);
-            font-weight: 600;
-            color: var(--text-secondary);
+        .card .card-actions .btn {
+            padding: 6px 14px;
             font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .admin-table tbody tr {
-            transition: var(--transition);
-        }
-
-        .admin-table tbody tr:hover {
-            background: rgba(108, 92, 231, 0.08);
-        }
-
-        .actions-cell {
+        /* ---------- пагинация ---------- */
+        .pagination {
             display: flex;
-            gap: 0.4rem;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 32px;
         }
 
-        /* ========== МОДАЛЬНОЕ ОКНО ========== */
-        .modal {
-            display: none;
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid var(--dns-border);
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--dns-gray);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-info {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* ---------- модальные окна ---------- */
+        .modal-overlay {
             position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 1000;
         }
 
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            padding: 2rem;
+        .modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 28px;
             width: 90%;
-            max-width: 560px;
+            max-width: 520px;
             max-height: 90vh;
             overflow-y: auto;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            animation: fadeIn 0.3s ease;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
         }
 
-        .modal-content h3 {
-            margin-bottom: 1.2rem;
+        .modal h2 {
+            margin-bottom: 16px;
             font-size: 1.3rem;
         }
 
-        .close {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: var(--transition);
+        .modal .form-group {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .close:hover {
-            color: var(--red);
+        .modal .form-group label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #444;
         }
 
-        .form-group {
-            margin-bottom: 1.1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.3rem;
-            font-weight: 500;
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            padding: 8px 12px;
+            border: 1px solid var(--dns-border);
+            border-radius: 6px;
             font-size: 0.9rem;
-            color: var(--text-secondary);
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.6rem 0.9rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--bg-primary);
-            color: #fff;
-            font-size: 0.9rem;
-            outline: none;
-            transition: var(--transition);
+        .modal .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.12);
+        .hidden {
+            display: none !important;
         }
 
-        .image-upload-area {
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-sm);
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .image-upload-area:hover {
-            border-color: var(--accent);
-            background: rgba(108, 92, 231, 0.05);
-        }
-
-        .image-upload-area i {
-            font-size: 2rem;
-            color: var(--text-secondary);
-        }
-
-        .image-upload-area img {
-            max-width: 100%;
-            max-height: 180px;
-            border-radius: var(--radius-sm);
-            margin-top: 0.5rem;
-        }
-
-        /* ========== УВЕДОМЛЕНИЯ ========== */
+        /* ---------- уведомления ---------- */
         .toast {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 0.9rem 1.4rem;
-            border-radius: 2rem;
+            top: 24px;
+            right: 24px;
+            padding: 14px 24px;
+            border-radius: 8px;
             color: #fff;
             font-weight: 500;
             z-index: 2000;
-            animation: slideUp 0.3s ease;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
         }
 
-        .toast-success { background: var(--green); }
-        .toast-error { background: var(--red); }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .toast.success {
+            background: var(--dns-green);
         }
 
-        /* ========== АДАПТИВ ========== */
-        @media (max-width: 768px) {
-            .app-header {
-                flex-wrap: wrap;
-                gap: 0.8rem;
-                padding: 0.8rem 1rem;
+        .toast.error {
+            background: var(--dns-red);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
             }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
-            .logo { font-size: 1rem; }
-            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-            .admin-toolbar { flex-direction: column; align-items: stretch; }
-            .admin-toolbar input { width: 100%; }
+        /* ---------- адаптив ---------- */
+        @media (max-width: 600px) {
+            .header {
+                padding: 10px 16px;
+            }
+            .container {
+                padding: 16px;
+            }
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- ==================== ШАПКА ==================== -->
-    <header class="app-header">
-        <div class="logo">🌌 DreamTeam Chaos Game</div>
-        <nav class="main-nav">
-            <button class="nav-btn active" data-view="gallery">
-                <i class="fas fa-th"></i> Галерея
-            </button>
-            <button class="nav-btn admin-only" data-view="admin">
-                <i class="fas fa-cogs"></i> Админ‑панель
-            </button>
-        </nav>
-        <div class="user-actions">
-            <button id="loginBtn" class="btn-login"><i class="fas fa-user"></i> Войти</button>
-        </div>
-    </header>
+<!-- ======================= ШАПКА ======================= -->
+<header class="header">
+    <div class="logo">Chaos<span>Game</span></div>
+    <nav class="nav-links">
+        <a href="#" class="active" id="nav-catalog">Каталог</a>
+        <a href="#" id="nav-admin">Администрирование</a>
+    </nav>
+</header>
 
-    <!-- ==================== ОСНОВНОЙ КОНТЕНТ ==================== -->
-    <main class="app-content">
-
-        <!-- ГАЛЕРЕЯ (по умолчанию) -->
-        <section id="galleryView" class="view active">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="gallerySearch" placeholder="Поиск по названию заклинания..." autocomplete="off">
-            </div>
-            <div id="cardsGrid" class="cards-grid">
-                <!-- JS наполнение -->
-            </div>
-            <div class="pagination" id="galleryPagination">
-                <button id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
-                <span id="pageIndicator">Страница 1</span>
-                <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </section>
-
-        <!-- АДМИН-ПАНЕЛЬ -->
-        <section id="adminView" class="view">
-            <div class="admin-toolbar">
-                <button id="addCardBtn" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Создать заклинание
-                </button>
-                <input type="text" id="adminSearch" placeholder="Поиск по названию..." autocomplete="off">
-            </div>
-            <div class="admin-table-wrapper">
-                <table id="adminTable" class="admin-table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Картинка</th>
-                        <th>Название</th>
-                        <th>Тип</th>
-                        <th>Редкость</th>
-                        <th>Действия</th>
-                    </tr>
-                    </thead>
-                    <tbody id="adminTableBody">
-                    <!-- JS наполнение -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-    </main>
+<!-- ======================= ОСНОВНОЙ БЛОК ======================= -->
+<div class="container" id="main-content">
+    <!-- динамически заполняется JS -->
 </div>
 
-<!-- ==================== МОДАЛЬНОЕ ОКНО ДЛЯ CRUD ==================== -->
-<div id="cardModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h3 id="modalTitle">Новое заклинание</h3>
-        <form id="cardForm">
-            <input type="hidden" id="cardId">
-
-            <div class="form-group">
-                <label for="cardName">Название</label>
-                <input type="text" id="cardName" required placeholder="Например, Огненный шар">
-            </div>
-
-            <div class="form-group">
-                <label for="cardType">Тип карты</label>
-                <select id="cardType">
-                    <option value="ATTACK">Атакующее заклинание</option>
-                    <option value="BUFF">Усиливающее заклинание</option>
-                    <option value="SHIELD">Щит</option>
-                    <option value="ARMOR">Доспех</option>
-                    <option value="SHIELD_DEFENDS_ENHANCEMENT">Усиление защиты</option>
-
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="cardRang">Ранг</label>
-                <select id="cardRang">
-                    <option value="GOLD">Золотой</option>
-                    <option value="SILVER">Серебрянный</option>
-                    <option value="USUAL">Обычный</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="cardRarety">Редкость</label>
-                <select id="cardRarety">
-                    <option value="RARE">Редкая</option>
-                    <option value="ORDINARY">Эпическая</option>
-                    <option value="UNIQUE">Эпическая</option>
-                    <option value="LEGENDARY">Легендарная</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="cardDuration">Длительность (в секундах)</label>
-                <input type="number" id="cardDuration" value="0" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="cardRecovery">Время восстановления (в секундах)</label>
-                <input type="number" id="cardRecovery" value="0" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="cardDescription">Полное описание</label>
-                <textarea id="cardDescription" rows="4" required placeholder="Опишите заклинание..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Изображение карты</label>
-                <div class="image-upload-area" id="imageDropZone">
-                    <input type="file" id="imageFile" accept="image/*" hidden>
-                    <div id="uploadPlaceholder">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Перетащите изображение или кликните для выбора</p>
-                    </div>
-                    <img id="imagePreview" src="" alt="Предпросмотр" style="display: none;">
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fas fa-save"></i> Сохранить
-            </button>
-        </form>
+<!-- ==================== МОДАЛЬНОЕ ОКНО (создание / редактирование) ==================== -->
+<div class="modal-overlay hidden" id="card-modal-overlay">
+    <div class="modal">
+        <h2 id="modal-title">Новая карта</h2>
+        <div class="form-group">
+            <label>Название</label>
+            <input type="text" id="modal-name" placeholder="Введите название" />
+        </div>
+        <div class="form-group">
+            <label>Полное описание</label>
+            <textarea id="modal-desc" rows="3" placeholder="Описание карты"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Тип</label>
+            <select id="modal-type">
+                <option value="ATTACK">ATTACK</option>
+                <option value="BUFF">BUFF</option>
+                <option value="SHIELD">SHIELD</option>
+                <option value="ARMOR">ARMOR</option>
+                <option value="SHIELD_DEFENDS_ENHANCEMENT">SHIELD_DEFENDS_ENHANCEMENT</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Ранг</label>
+            <select id="modal-rang">
+                <option value="GOLD">GOLD</option>
+                <option value="SILVER">SILVER</option>
+                <option value="USUAL">USUAL</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Редкость</label>
+            <select id="modal-rarety">
+                <option value="RARE">RARE</option>
+                <option value="ORDINARY">ORDINARY</option>
+                <option value="UNIQUE">UNIQUE</option>
+                <option value="LEGENDARY">LEGENDARY</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Длительность (сек)</label>
+            <input type="number" id="modal-duration" placeholder="0" step="1" />
+        </div>
+        <div class="form-group">
+            <label>Время восстановления (сек)</label>
+            <input type="number" id="modal-recovery" placeholder="0" step="1" />
+        </div>
+        <div class="form-group">
+            <label>Изображение (URL или оставьте пустым)</label>
+            <input type="text" id="modal-image" placeholder="https://..." />
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="modal-cancel">Отмена</button>
+            <button class="btn btn-primary" id="modal-save">Сохранить</button>
+        </div>
     </div>
 </div>
 
-<!-- ==================== СКРИПТЫ ==================== -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- ==================== МОДАЛЬНОЕ ОКНО ЗАГРУЗКИ ФАЙЛА ==================== -->
+<div class="modal-overlay hidden" id="upload-modal-overlay">
+    <div class="modal">
+        <h2>Загрузить изображение для карты</h2>
+        <div class="form-group">
+            <label>ID карты</label>
+            <input type="number" id="upload-card-id" placeholder="Например, 1" />
+        </div>
+        <div class="form-group">
+            <label>Файл изображения</label>
+            <input type="file" id="upload-file-input" accept="image/*" />
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="upload-cancel">Отмена</button>
+            <button class="btn btn-primary" id="upload-submit">Загрузить</button>
+        </div>
+    </div>
+</div>
+
 <script>
     (function() {
-        // ==================== КОНФИГУРАЦИЯ ====================
-        const API_BASE = '';                // базовый URL, если фронт и бэк на одном origin
-        const DEFAULT_LIMIT = 12;           // карт на странице в галерее
-        const ADMIN_LIMIT = 50;             // карт в таблице админа
+        /* ========== КОНФИГУРАЦИЯ ========== */
+        const API_BASE = ''; // или '' – зависит от того, как развёрнут бэкенд
+        // Если вы запускаете бэкенд локально на том же порту, можно оставить ''.
+        // Если фронт открывается отдельно, укажите полный адрес, например:
+        // const API_BASE = 'http://localhost:8080';
 
-        // ==================== DOM-ЭЛЕМЕНТЫ ====================
-        const $ = (sel) => document.querySelector(sel);
-        const $$ = (sel) => document.querySelectorAll(sel);
+        /* ========== СОСТОЯНИЕ ========== */
+        let currentPage = 'catalog'; // 'catalog' | 'admin'
+        let cards = [];
+        let offset = 0;
+        const LIMIT = 12;
+        let totalCount = 0;
+        let editingCardId = null; // null – создание, иначе редактирование
 
-        // Навигация
-        const navButtons = $$('.nav-btn');
-        const galleryView = $('#galleryView');
-        const adminView = $('#adminView');
+        /* ========== DOM-ЭЛЕМЕНТЫ ========== */
+        const mainContent = document.getElementById('main-content');
+        const cardModalOverlay = document.getElementById('card-modal-overlay');
+        const uploadModalOverlay = document.getElementById('upload-modal-overlay');
 
-        // Галерея
-        const cardsGrid = $('#cardsGrid');
-        const gallerySearch = $('#gallerySearch');
-        const prevPageBtn = $('#prevPage');
-        const nextPageBtn = $('#nextPage');
-        const pageIndicator = $('#pageIndicator');
+        /* ========== ИНИЦИАЛИЗАЦИЯ ========== */
+        function init() {
+            document.getElementById('nav-catalog').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTo('catalog');
+            });
+            document.getElementById('nav-admin').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTo('admin');
+            });
 
-        // Админка
-        const adminTableBody = $('#adminTableBody');
-        const adminSearch = $('#adminSearch');
-        const addCardBtn = $('#addCardBtn');
+            // Модальное окно карты
+            document.getElementById('modal-cancel').addEventListener('click', closeCardModal);
+            document.getElementById('modal-save').addEventListener('click', saveCard);
+            cardModalOverlay.addEventListener('click', (e) => {
+                if (e.target === cardModalOverlay) closeCardModal();
+            });
 
-        // Модальное окно
-        const modal = $('#cardModal');
-        const closeModalBtn = $('#closeModal');
-        const cardForm = $('#cardForm');
-        const modalTitle = $('#modalTitle');
-        const cardIdInput = $('#cardId');
-        const cardNameInput = $('#cardName');
-        const cardTypeSelect = $('#cardType');
-        const cardRangSelect = $('#cardRang');
-        const cardRaretySelect = $('#cardRarety');
-        const cardDurationInput = $('#cardDuration');
-        const cardRecoveryInput = $('#cardRecovery');
-        const cardDescriptionInput = $('#cardDescription');
-        const imageFileInput = $('#imageFile');
-        const imageDropZone = $('#imageDropZone');
-        const uploadPlaceholder = $('#uploadPlaceholder');
-        const imagePreview = $('#imagePreview');
+            // Модальное окно загрузки файла
+            document.getElementById('upload-cancel').addEventListener('click', closeUploadModal);
+            document.getElementById('upload-submit').addEventListener('click', uploadFile);
+            uploadModalOverlay.addEventListener('click', (e) => {
+                if (e.target === uploadModalOverlay) closeUploadModal();
+            });
 
-        // ==================== СОСТОЯНИЕ ====================
-        let currentPage = 0;
-        let totalCards = 0;
-        let selectedFile = null;       // File для загрузки
+            switchTo('catalog');
+        }
 
-        // ==================== УТИЛИТЫ ====================
-        function showToast(message, type = 'success') {
+        function switchTo(page) {
+            currentPage = page;
+            document.getElementById('nav-catalog').classList.toggle('active', page === 'catalog');
+            document.getElementById('nav-admin').classList.toggle('active', page === 'admin');
+            offset = 0;
+            cards = [];
+            if (page === 'catalog') renderCatalog();
+            else renderAdmin();
+        }
+
+        /* ========== РЕНДЕР КАТАЛОГА ========== */
+        function renderCatalog() {
+            mainContent.innerHTML = `
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Название</label>
+                        <input type="text" id="filter-name" placeholder="Поиск…" />
+                    </div>
+                    <div class="filter-group">
+                        <label>Тип</label>
+                        <select id="filter-type">
+                            <option value="">Все</option>
+                            <option value="ATTACK">ATTACK</option>
+                            <option value="BUFF">BUFF</option>
+                            <option value="SHIELD">SHIELD</option>
+                            <option value="ARMOR">ARMOR</option>
+                            <option value="SHIELD_DEFENDS_ENHANCEMENT">SHIELD_DEFENDS_ENHANCEMENT</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Ранг</label>
+                        <select id="filter-rang">
+                            <option value="">Все</option>
+                            <option value="GOLD">GOLD</option>
+                            <option value="SILVER">SILVER</option>
+                            <option value="USUAL">USUAL</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Редкость</label>
+                        <select id="filter-rarety">
+                            <option value="">Все</option>
+                            <option value="RARE">RARE</option>
+                            <option value="ORDINARY">ORDINARY</option>
+                            <option value="UNIQUE">UNIQUE</option>
+                            <option value="LEGENDARY">LEGENDARY</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="btn-apply-filters">🔍 Найти</button>
+                </div>
+                <div class="cards-grid" id="cards-container"></div>
+                <div class="pagination" id="pagination-container"></div>
+            `;
+
+            document.getElementById('btn-apply-filters').addEventListener('click', () => {
+                offset = 0;
+                loadCards();
+            });
+            loadCards();
+        }
+
+        /* ========== РЕНДЕР АДМИНКИ ========== */
+        function renderAdmin() {
+            mainContent.innerHTML = `
+                <div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+                    <button class="btn btn-success" id="btn-create-card">＋ Создать карту</button>
+                    <button class="btn btn-secondary" id="btn-upload-picture">📷 Загрузить изображение</button>
+                </div>
+                <div class="cards-grid" id="cards-container"></div>
+                <div class="pagination" id="pagination-container"></div>
+            `;
+
+            document.getElementById('btn-create-card').addEventListener('click', () => openCardModal(null));
+            document.getElementById('btn-upload-picture').addEventListener('click', openUploadModal);
+            loadCards();
+        }
+
+        /* ========== ЗАГРУЗКА КАРТОЧЕК ========== */
+        async function loadCards() {
+            const container = document.getElementById('cards-container');
+            const paginationContainer = document.getElementById('pagination-container');
+            if (!container) return;
+
+            container.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:40px;">Загрузка…</p>';
+
+            let url = `${API_BASE}/cards?offset=${offset}&limit=${LIMIT}`;
+            if (currentPage === 'catalog') {
+                const name = document.getElementById('filter-name')?.value.trim();
+                const type = document.getElementById('filter-type')?.value;
+                const rang = document.getElementById('filter-rang')?.value;
+                const rarety = document.getElementById('filter-rarety')?.value;
+                if (name) url += `&name=${encodeURIComponent(name)}`;
+                if (type) url += `&type=${type}`;
+                if (rang) url += `&rang=${rang}`;
+                if (rarety) url += `&rarety=${rarety}`;
+            }
+
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`Ошибка ${res.status}`);
+                const data = await res.json();
+                cards = data.cards || [];
+                totalCount = data.totalCount || 0;
+                renderCards(container);
+                renderPagination(paginationContainer);
+            } catch (err) {
+                container.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--dns-red);">Ошибка загрузки: ${err.message}</p>`;
+            }
+        }
+
+        function renderCards(container) {
+            if (cards.length === 0) {
+                container.innerHTML =
+                    '<p style="grid-column:1/-1; text-align:center; padding:40px;">Карточки не найдены</p>';
+                return;
+            }
+            container.innerHTML = cards.map(card => {
+                const imgSrc = card.originImage || '';
+                const imgBlock = imgSrc ?
+                    `<img class="card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(card.name)}" />` :
+                    `<div class="card-img">🃏</div>`;
+                const actions = currentPage === 'admin' ? `
+                    <button class="btn btn-primary" data-action="edit" data-id="${card.id}">✎</button>
+                    <button class="btn btn-danger" data-action="delete" data-id="${card.id}">🗑</button>
+                ` : '';
+                return `
+                    <div class="card" data-id="${card.id}">
+                        ${imgBlock}
+                        <div class="card-body">
+                            <div class="card-title">${escapeHtml(card.name || 'Без названия')}</div>
+                            <div class="card-meta">
+                                <span>${escapeHtml(card.type || '—')}</span>
+                                <span>${escapeHtml(card.rang || '—')}</span>
+                                <span>${escapeHtml(card.rarety || '—')}</span>
+                            </div>
+                            <div class="card-actions">${actions}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Вешаем обработчики на кнопки
+            container.querySelectorAll('[data-action="edit"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const card = cards.find(c => c.id == id);
+                    if (card) openCardModal(card);
+                });
+            });
+            container.querySelectorAll('[data-action="delete"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (confirm('Удалить карту?')) deleteCard(btn.dataset.id);
+                });
+            });
+        }
+
+        function renderPagination(container) {
+            if (!container) return;
+            const totalPages = Math.ceil(totalCount / LIMIT) || 1;
+            const currentPageNum = Math.floor(offset / LIMIT) + 1;
+            container.innerHTML = `
+                <button ${offset === 0 ? 'disabled' : ''} id="btn-prev">← Назад</button>
+                <span class="page-info">Стр. ${currentPageNum} из ${totalPages} (всего: ${totalCount})</span>
+                <button ${offset + LIMIT >= totalCount ? 'disabled' : ''} id="btn-next">Вперёд →</button>
+            `;
+            document.getElementById('btn-prev')?.addEventListener('click', () => {
+                if (offset > 0) {
+                    offset = Math.max(0, offset - LIMIT);
+                    loadCards();
+                }
+            });
+            document.getElementById('btn-next')?.addEventListener('click', () => {
+                if (offset + LIMIT < totalCount) {
+                    offset += LIMIT;
+                    loadCards();
+                }
+            });
+        }
+
+        /* ========== МОДАЛЬНОЕ ОКНО КАРТЫ ========== */
+        function openCardModal(card) {
+            editingCardId = card ? card.id : null;
+            document.getElementById('modal-title').textContent = card ? 'Редактирование карты' :
+                'Новая карта';
+            document.getElementById('modal-name').value = card ? (card.name || '') : '';
+            document.getElementById('modal-desc').value = card ? (card.fullDescription || '') : '';
+            document.getElementById('modal-type').value = card ? (card.type || 'ATTACK') : 'ATTACK';
+            document.getElementById('modal-rang').value = card ? (card.rang || 'USUAL') : 'USUAL';
+            document.getElementById('modal-rarety').value = card ? (card.rarety || 'ORDINARY') : 'ORDINARY';
+            document.getElementById('modal-duration').value = card ? (card.duration || 0) : 0;
+            document.getElementById('modal-recovery').value = card ? (card.recoveryTime || 0) : 0;
+            document.getElementById('modal-image').value = card ? (card.originImage || '') : '';
+            cardModalOverlay.classList.remove('hidden');
+        }
+
+        function closeCardModal() {
+            cardModalOverlay.classList.add('hidden');
+            editingCardId = null;
+        }
+
+        async function saveCard() {
+            const payload = {
+                name: document.getElementById('modal-name').value.trim(),
+                fullDescription: document.getElementById('modal-desc').value.trim(),
+                type: document.getElementById('modal-type').value,
+                rang: document.getElementById('modal-rang').value,
+                rarety: document.getElementById('modal-rarety').value,
+                duration: parseInt(document.getElementById('modal-duration').value) || 0,
+                recoveryTime: parseInt(document.getElementById('modal-recovery').value) || 0,
+                originImage: document.getElementById('modal-image').value.trim(),
+            };
+
+            try {
+                let res;
+                if (editingCardId) {
+                    // PATCH – частичное обновление
+                    res = await fetch(`${API_BASE}/cards/${editingCardId}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+                } else {
+                    // POST – создание
+                    res = await fetch(`${API_BASE}/cards`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+                }
+                if (!res.ok) throw new Error(`Ошибка ${res.status}`);
+                closeCardModal();
+                showToast(editingCardId ? 'Карта обновлена' : 'Карта создана', 'success');
+                loadCards();
+            } catch (err) {
+                showToast(`Ошибка: ${err.message}`, 'error');
+            }
+        }
+
+        async function deleteCard(id) {
+            try {
+                const res = await fetch(`${API_BASE}/cards/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error(`Ошибка ${res.status}`);
+                showToast('Карта удалена', 'success');
+                loadCards();
+            } catch (err) {
+                showToast(`Ошибка удаления: ${err.message}`, 'error');
+            }
+        }
+
+        /* ========== МОДАЛЬНОЕ ОКНО ЗАГРУЗКИ ФАЙЛА ========== */
+        function openUploadModal() {
+            uploadModalOverlay.classList.remove('hidden');
+            document.getElementById('upload-card-id').value = '';
+            document.getElementById('upload-file-input').value = '';
+        }
+
+        function closeUploadModal() {
+            uploadModalOverlay.classList.add('hidden');
+        }
+
+        async function uploadFile() {
+            const cardId = document.getElementById('upload-card-id').value.trim();
+            const fileInput = document.getElementById('upload-file-input');
+            const file = fileInput.files[0];
+            if (!cardId || !file) {
+                showToast('Укажите ID карты и выберите файл', 'error');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('cardId', cardId);
+            formData.append('file', file);
+
+            try {
+                const res = await fetch(`${API_BASE}/cards/${cardId}/upload/picture/`, {
+                    method: 'POST',
+                    body: formData,
+                });
+                if (!res.ok) throw new Error(`Ошибка ${res.status}`);
+                showToast('Изображение загружено', 'success');
+                closeUploadModal();
+                loadCards();
+            } catch (err) {
+                showToast(`Ошибка загрузки: ${err.message}`, 'error');
+            }
+        }
+
+        /* ========== УВЕДОМЛЕНИЯ ========== */
+        function showToast(message, type) {
             const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
+            toast.className = `toast ${type}`;
             toast.textContent = message;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3500);
         }
 
-        function getRarityClass(rarity) {
-            if (!rarity) return '';
-            const r = rarity.toLowerCase();
-            if (r === 'legendary' || r === 'легендарная') return 'rarity-legendary';
-            if (r === 'epic' || r === 'эпическая') return 'rarity-epic';
-            if (r === 'rare' || r === 'редкая') return 'rarity-rare';
-            return 'rarity-common';
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
         }
 
-        function getRarityLabel(rarity) {
-            if (!rarity) return '?';
-            const r = rarity.toLowerCase();
-            if (r === 'legendary') return 'ЛЕГЕНДАРНАЯ';
-            if (r === 'epic') return 'ЭПИЧЕСКАЯ';
-            if (r === 'rare') return 'РЕДКАЯ';
-            return 'ОБЫЧНАЯ';
-        }
-
-        // для отображения duration (приходит в секундах?)
-        function formatDuration(seconds) {
-            if (!seconds || seconds <= 0) return '—';
-            if (seconds < 60) return seconds + 'с';
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            return m + 'м ' + (s > 0 ? s + 'с' : '');
-        }
-
-        // ==================== НАВИГАЦИЯ ====================
-        navButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                navButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const view = btn.dataset.view;
-                galleryView.classList.toggle('active', view === 'gallery');
-                adminView.classList.toggle('active', view === 'admin');
-                if (view === 'gallery') loadGalleryCards();
-                if (view === 'admin') loadAdminCards();
-            });
-        });
-
-        // ==================== ЗАГРУЗКА ДАННЫХ ====================
-        async function loadGalleryCards(page = 0) {
-            try {
-                const name = gallerySearch.value.trim() || null;
-                const params = {
-                    offset: page,
-                    limit: DEFAULT_LIMIT,
-                };
-                if (name) params.name = name;
-
-                const resp = await axios.get(API_BASE + '/cards', { params });
-                const data = resp.data;   // CardsByParamsResponseDTO
-                const cards = data.cards || data.content || [];
-                totalCards = data.totalCount ?? data.totalElements ?? 0;
-                currentPage = page;
-
-                renderGalleryCards(cards);
-                updatePagination();
-            } catch (err) {
-                console.error('Ошибка загрузки галереи:', err);
-                showToast('Не удалось загрузить карты', 'error');
-            }
-        }
-
-        function renderGalleryCards(cards) {
-            if (!cards.length) {
-                cardsGrid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-secondary);">🔮 Заклинания не найдены</p>';
-                return;
-            }
-
-            cardsGrid.innerHTML = cards.map(card => {
-                const imageUrl = card.originImage
-                    ? API_BASE + '/download/' + card.id
-                    : null;
-                const rarityClass = getRarityClass(card.rarety);
-                const rarityLabel = getRarityLabel(card.rarety);
-                const duration = formatDuration(card.duration);
-
-                return `
-                        <div class="card">
-                            <div class="card-image">
-                                ${imageUrl
-                    ? `<img src="${imageUrl}" alt="${card.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                       <div class="placeholder-img" style="display:none;"><i class="fas fa-image"></i></div>`
-                    : `<div class="placeholder-img"><i class="fas fa-image"></i></div>`
-                }
-                                <div class="card-mana">⚡ ${card.rang ?? '?'}</div>
-                            </div>
-                            <div class="card-body">
-                                <h3>${card.name ?? 'Без названия'}</h3>
-                                <div class="card-type">${card.type ?? 'Неизвестный тип'}</div>
-                                <div class="card-desc">${card.fullDescription ?? 'Описание отсутствует'}</div>
-                                <div class="card-stats">
-                                    <span><i class="fas fa-clock"></i> ${duration}</span>
-                                    <span><i class="fas fa-redo-alt"></i> ${formatDuration(card.recoveryTime)}</span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <span class="rarity-badge ${rarityClass}">${rarityLabel}</span>
-                                <span style="font-size:0.75rem; color:var(--text-secondary);">ID: ${card.id}</span>
-                            </div>
-                        </div>`;
-            }).join('');
-        }
-
-        function updatePagination() {
-            const totalPages = Math.ceil(totalCards / DEFAULT_LIMIT) || 1;
-            pageIndicator.textContent = `Страница ${currentPage + 1} из ${totalPages}`;
-            prevPageBtn.disabled = currentPage === 0;
-            nextPageBtn.disabled = (currentPage + 1) >= totalPages;
-        }
-
-        // -------------------- АДМИН-ТАБЛИЦА --------------------
-        async function loadAdminCards() {
-            try {
-                const name = adminSearch.value.trim() || null;
-                const params = {
-                    offset: 0,
-                    limit: ADMIN_LIMIT,
-                };
-                if (name) params.name = name;
-
-                const resp = await axios.get(API_BASE + '/cards', { params });
-                const data = resp.data;
-                const cards = data.cards || data.content || [];
-                renderAdminTable(cards);
-            } catch (err) {
-                console.error('Ошибка загрузки админки:', err);
-                showToast('Ошибка загрузки таблицы', 'error');
-            }
-        }
-
-        function renderAdminTable(cards) {
-            if (!cards.length) {
-                adminTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Нет карт</td></tr>';
-                return;
-            }
-
-            adminTableBody.innerHTML = cards.map(card => {
-                const imgCell = card.originImage
-                    ? `<img src="${API_BASE}/download/${card.id}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;" onerror="this.outerHTML='❌'">`
-                    : '—';
-                return `
-                        <tr>
-                            <td>${card.id}</td>
-                            <td>${imgCell}</td>
-                            <td><strong>${card.name ?? '—'}</strong></td>
-                            <td>${card.type ?? '—'}</td>
-                            <td><span class="rarity-badge ${getRarityClass(card.rarety)}">${getRarityLabel(card.rarety)}</span></td>
-                            <td class="actions-cell">
-                                <button class="btn-icon btn-sm edit-btn" data-id="${card.id}" title="Редактировать"><i class="fas fa-edit"></i></button>
-                                <button class="btn-icon btn-sm delete-btn" data-id="${card.id}" title="Удалить"><i class="fas fa-trash"></i></button>
-                                <button class="btn-icon btn-sm upload-btn" data-id="${card.id}" title="Загрузить картинку"><i class="fas fa-upload"></i></button>
-                            </td>
-                        </tr>`;
-            }).join('');
-
-            // Навешиваем обработчики на кнопки строк
-            adminTableBody.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', () => openEditModal(btn.dataset.id));
-            });
-            adminTableBody.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', () => deleteCard(btn.dataset.id));
-            });
-            adminTableBody.querySelectorAll('.upload-btn').forEach(btn => {
-                btn.addEventListener('click', () => openUploadOnlyModal(btn.dataset.id));
-            });
-        }
-
-        // ==================== CRUD-ОПЕРАЦИИ ====================
-        function resetForm() {
-            cardForm.reset();
-            cardIdInput.value = '';
-            selectedFile = null;
-            imageFileInput.value = '';
-            imagePreview.style.display = 'none';
-            uploadPlaceholder.style.display = 'block';
-            modalTitle.textContent = 'Новое заклинание';
-        }
-
-        function openCreateModal() {
-            resetForm();
-            modal.classList.add('active');
-        }
-
-        async function openEditModal(cardId) {
-            try {
-                const resp = await axios.get(API_BASE + `/cards/${cardId}`);
-                const card = resp.data;
-                resetForm();
-                modalTitle.textContent = 'Редактировать заклинание';
-                cardIdInput.value = card.id;
-                cardNameInput.value = card.name ?? '';
-                cardTypeSelect.value = card.type ?? 'SPELL';
-                cardRangSelect.value = card.rang ?? 'COMMON';
-                cardRaretySelect.value = card.rarety ?? 'COMMON';
-                cardDurationInput.value = card.duration ?? 0;
-                cardRecoveryInput.value = card.recoveryTime ?? 0;
-                cardDescriptionInput.value = card.fullDescription ?? '';
-                if (card.originImage) {
-                    imagePreview.src = API_BASE + '/download/' + card.id;
-                    imagePreview.style.display = 'block';
-                    uploadPlaceholder.style.display = 'none';
-                }
-                modal.classList.add('active');
-            } catch (err) {
-                console.error(err);
-                showToast('Не удалось загрузить карту для редактирования', 'error');
-            }
-        }
-
-        async function openUploadOnlyModal(cardId) {
-            // Упрощённая загрузка: показываем модалку только с полем файла
-            resetForm();
-            modalTitle.textContent = 'Загрузить изображение (ID: ' + cardId + ')';
-            cardIdInput.value = cardId;
-            // делаем остальные поля неактивными (но не required)
-            cardNameInput.required = false;
-            cardDescriptionInput.required = false;
-            modal.classList.add('active');
-            // после закрытия возвращаем required
-            const restore = () => {
-                cardNameInput.required = true;
-                cardDescriptionInput.required = true;
-            };
-            modal.addEventListener('transitionend', restore, { once: true });
-        }
-
-        cardForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const id = cardIdInput.value;
-            const payload = {
-                id: id || null,
-                name: cardNameInput.value,
-                type: cardTypeSelect.value,
-                rang: cardRangSelect.value,
-                rarety: cardRaretySelect.value,
-                duration: parseInt(cardDurationInput.value) || 0,
-                recoveryTime: parseInt(cardRecoveryInput.value) || 0,
-                fullDescription: cardDescriptionInput.value,
-                originImage: null,   // будет перезаписан при upload
-            };
-
-            try {
-                let savedCard;
-                if (id) {
-                    // обновление через PATCH
-                    const resp = await axios.patch(API_BASE + `/cards/${id}`, payload);
-                    savedCard = resp.data;
-                } else {
-                    // создание новой карты
-                    const resp = await axios.post(API_BASE + '/cards', payload);
-                    savedCard = resp.data;
-                }
-
-                // Если выбран файл — загружаем его
-                if (selectedFile && savedCard.id) {
-                    const formData = new FormData();
-                    formData.append('cardId', savedCard.id);
-                    formData.append('file', selectedFile);
-                    await axios.post(API_BASE + `/cards/${savedCard.id}/upload/picture/`, formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    });
-                }
-
-                showToast(id ? 'Карта обновлена' : 'Карта создана');
-                closeModalFn();
-                // перезагружаем активное представление
-                if (galleryView.classList.contains('active')) loadGalleryCards(currentPage);
-                if (adminView.classList.contains('active')) loadAdminCards();
-            } catch (err) {
-                console.error(err);
-                const msg = err.response?.data?.message || err.response?.data || 'Ошибка сохранения';
-                showToast(typeof msg === 'string' ? msg : 'Ошибка сохранения', 'error');
-            }
-        });
-
-        async function deleteCard(cardId) {
-            if (!confirm('Удалить карту #' + cardId + '? Это действие необратимо.')) return;
-            try {
-                await axios.delete(API_BASE + `/cards/${cardId}`);
-                showToast('Карта удалена');
-                if (adminView.classList.contains('active')) loadAdminCards();
-                if (galleryView.classList.contains('active')) loadGalleryCards(currentPage);
-            } catch (err) {
-                console.error(err);
-                showToast('Ошибка удаления', 'error');
-            }
-        }
-
-        // ==================== МОДАЛЬНОЕ ОКНО ====================
-        function closeModalFn() {
-            modal.classList.remove('active');
-            cardNameInput.required = true;
-            cardDescriptionInput.required = true;
-        }
-
-        closeModalBtn.addEventListener('click', closeModalFn);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModalFn();
-        });
-
-        addCardBtn.addEventListener('click', openCreateModal);
-
-        // ==================== ЗАГРУЗКА ИЗОБРАЖЕНИЯ (drag & drop) ====================
-        imageDropZone.addEventListener('click', () => imageFileInput.click());
-
-        imageFileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                selectedFile = e.target.files[0];
-                showImagePreview(selectedFile);
-            }
-        });
-
-        imageDropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            imageDropZone.style.borderColor = 'var(--accent)';
-        });
-
-        imageDropZone.addEventListener('dragleave', () => {
-            imageDropZone.style.borderColor = 'var(--border)';
-        });
-
-        imageDropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            imageDropZone.style.borderColor = 'var(--border)';
-            if (e.dataTransfer.files.length > 0) {
-                selectedFile = e.dataTransfer.files[0];
-                imageFileInput.files = e.dataTransfer.files; // синхронизация
-                showImagePreview(selectedFile);
-            }
-        });
-
-        function showImagePreview(file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                imagePreview.src = ev.target.result;
-                imagePreview.style.display = 'block';
-                uploadPlaceholder.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // ==================== ПОИСК (ГАЛЕРЕЯ) ====================
-        let gallerySearchTimer;
-        gallerySearch.addEventListener('input', () => {
-            clearTimeout(gallerySearchTimer);
-            gallerySearchTimer = setTimeout(() => {
-                currentPage = 0;
-                loadGalleryCards(0);
-            }, 400);
-        });
-
-        // ==================== ПОИСК (АДМИНКА) ====================
-        let adminSearchTimer;
-        adminSearch.addEventListener('input', () => {
-            clearTimeout(adminSearchTimer);
-            adminSearchTimer = setTimeout(() => loadAdminCards(), 400);
-        });
-
-        // ==================== ПАГИНАЦИЯ ====================
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 0) loadGalleryCards(currentPage - 1);
-        });
-
-        nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(totalCards / DEFAULT_LIMIT) || 1;
-            if (currentPage + 1 < totalPages) loadGalleryCards(currentPage + 1);
-        });
-
-        // ==================== ЗАПУСК ====================
-        loadGalleryCards(0);
-
+        /* ========== ЗАПУСК ========== */
+        init();
     })();
 </script>
 </body>
