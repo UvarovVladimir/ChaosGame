@@ -35,6 +35,10 @@ public class CardValidationService {
         if (card.getRecoveryTime() == null) {
             throw new RuntimeException("Card recoveryTime must not be null");
         }
+
+        if (duplicateCardService.isDuplicate(card)) {
+            throw new RuntimeException("Card is duplicated");
+        }
         duplicateCardService.isDuplicate(card);
     }
 }

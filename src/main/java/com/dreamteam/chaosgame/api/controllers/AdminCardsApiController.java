@@ -6,6 +6,7 @@ import com.dreamteam.chaosgame.api.validators.CardCreateApiValidator;
 import com.dreamteam.chaosgame.business.CardManagerService;
 import com.dreamteam.chaosgame.db.Card;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +39,8 @@ public class AdminCardsApiController {
         return cardMapper.toDto(card);
     }
 
-    @PostMapping("/cards")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("admin/cards")
     public CardDTO createNewCard(@RequestBody CardDTO cardDTO) {
         cardCreateApiValidator.validate(cardDTO);
         Card card = cardMapper.toEntity(cardDTO);
